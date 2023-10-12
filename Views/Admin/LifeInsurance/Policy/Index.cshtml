@@ -1,0 +1,134 @@
+﻿@using test0000001.Helpers;
+@model IEnumerable<test0000001.Models.Policy>
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Life Insurance";
+}
+
+@section Css {
+    <link rel="stylesheet" href="/AdminLibrary/assets/vendors/simple-datatables/style.css">
+
+    <style>
+        table .desc-col-width {
+            width: 35% !important;
+        }
+    </style>
+}
+
+<div class="page-heading">
+    <h3>Life Insurance Policy Management</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <p>
+            <a asp-action="Index" asp-controller="LifeInsurance" class="btn btn-sm btn-primary me-2">
+                Go Back
+            </a>
+            <a asp-action="Create" class="btn btn-sm btn-outline-primary">
+                Create New
+            </a>
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover table-striped" id="policyManagement">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Image)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th scope="col">Term (yrs)</th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Premium) (USD)
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row" class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td class="align-top">
+                                    <img src="~/@item.Image" style="width: 80px; height: auto; border-radius: 5%;" alt="@item.Name">
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td class="desc-col-width align-top">
+                                    @Html.Raw(Html.GetShortDescription(item.Description))
+                                </td>
+                                <td class="align-top">
+                                    @(item.Duration != null ? item.Duration.Term / 12 : "")
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Premium)
+                                </td>
+                                <td class="align-top">
+                                    <div class="d-flex justify-content-center align-items-start">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1 mb-1">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="javascript:deleteItem('@item.Id')" class="btn btn-sm btn-outline-danger mb-1">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog"></div>
+
+@section Scripts
+    {
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/AdminLibrary/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        const table = document.querySelector("#policyManagement");
+        const dataTable = new simpleDatatables.DataTable(table);
+    </script>
+
+    <script>
+        function deleteItem(id) {
+            $.ajax({
+                url: "/Admin/LifeInsurance/Delete/" + id,
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    try {
+                        $('#deleteModal').html(data);
+                        $('#deleteModal').modal('show');
+                    } catch (e) {
+                        let newDoc = document.open("text/html", "replace");
+                        newDoc.write(data);
+                        newDoc.close();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Status: ", status);
+                    console.log("Error: ", error);
+                }
+            })
+        }
+    </script>
+}  

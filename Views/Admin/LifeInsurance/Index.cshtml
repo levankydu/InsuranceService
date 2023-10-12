@@ -1,0 +1,158 @@
+﻿@model test0000001.Models.DTO.LifeInsurance.AdminStatistic
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Life Insurance Management";
+}
+
+@section Css {
+    <link rel="stylesheet" href="/AdminLibrary/assets/vendors/simple-datatables/style.css">
+
+}
+
+
+<div class="page-heading">
+    <h3>Life Insurance Management</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <a href="/admin/LifeInsuranceHolder/index">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon blue d-flex align-items-center justify-content-center">
+                                            <div><i class="bi bi-file-earmark-person"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">PolicyHolders</h6>
+                                        <h6 class="font-extrabold mb-1">Total: @Model.PolicyHolderCount</h6>
+                                        <h6 class="font-extrabold text-dark bg-warning d-inline-block border border-warning rounded p-1 mb-1">Pending: @Model.PolicyHolderPendingCount</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <a href="/admin/lifeinsurance/list">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon purple d-flex align-items-center justify-content-center">
+                                            <div><i class="bi bi-journal-text"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Policies</h6>
+                                        <h6 class="font-extrabold mb-0">Total: @Model.PolicyCount</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <a href="/admin/appraisalQues/index">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon green d-flex align-items-center justify-content-center">
+                                            <div><i class="bi bi-patch-question-fill"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Appraisal Questions</h6>
+                                        <h6 class="font-extrabold mb-0">Total: @Model.AppraisalQuesCount</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Due Payments</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-lg" id="duePaymentsManagement">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">No.</th>
+                                            <th scope="col">Policy name</th>
+                                            <th scope="col">Policyholder</th>
+                                            <th scope="col">Insured</th>
+                                            <th scope="col">Term (yrs)</th>
+                                            <th scope="col">Start date</th>
+                                            <th scope="col" class="text-danger">Overdue days</th>
+                                            <th scope="col" class="text-primary">Amount (USD)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.DuePayments?.Count; i++)
+                                        {
+                                            <tr>
+                                                <td class="align-top">@(i + 1)</td>
+                                                <td class="align-top">
+                                                    <a asp-action="Details"
+                                                       asp-controller="LifeInsuranceHolder"
+                                                       asp-route-id="@Model.DuePayments[i].PolicyHolderId">
+                                                        @Model.DuePayments[i].PolicyName
+                                                    </a>
+                                                </td>
+                                                <td class="align-top">
+                                                    @Model.DuePayments[i].PolicyHolderName
+                                                </td>
+                                                <td class="align-top">
+                                                    @Model.DuePayments[i].InsuredName
+                                                </td>
+                                                <td class="align-top">
+                                                    @Model.DuePayments[i].Term
+                                                </td>
+                                                <td class="align-top">
+                                                    @Model.DuePayments[i].StartDate.ToString("dd MMM yyyy")
+                                                </td>
+                                                <td class="align-top text-danger">
+                                                    @Model.DuePayments[i].OverdueDays
+                                                </td>
+                                                <td class="align-top text-primary">
+                                                    @Model.DuePayments[i].DueAmount
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/AdminLibrary/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        const table = document.querySelector("#duePaymentsManagement");
+        const dataTable = new simpleDatatables.DataTable(table);
+    </script>
+}

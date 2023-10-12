@@ -1,0 +1,302 @@
+﻿@model test0000001.Models.ApplicationUser
+
+@section Css{
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="~/Profile/site.css" rel="stylesheet" />
+	<style>
+
+		.navbar.sticky-top {
+			top: 0px !important;
+		}
+
+	
+	</style>
+
+}
+
+@{
+	ViewData["Title"] = "Update Profile Page";
+
+}
+<div class="container-fluid p-0">
+	<!-- Header -->
+	<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://previews.123rf.com/images/arrow/arrow1601/arrow160100002/51071368-insurance-background.jpg); background-size: cover; background-position: center top;">
+		<!-- Mask -->
+		<span class="mask bg-gradient-default opacity-8"></span>
+		<!-- Header container -->
+		<div class="container-fluid d-flex align-items-center">
+			<div class="row">
+				<div class="col-lg-12 col-md-10">
+					<h1 class="display-2 text-white">Hello @Model.FirstName @Model.LastName</h1>
+					<p class="text-white mt-0 mb-5">This is your edit profile page. You can update your information at form below.</p>
+					<a asp-action="Profile" asp-route-id="@Model.UserName" class="btn btn-info">Back</a>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page content -->
+	<div class="container-fluid mt--7">
+		<div class="row" style="justify-content:center!important;">
+			<div class="col-xl-8 order-xl-1">
+				<div class="card bg-secondary shadow">
+					<div class="card-header bg-white border-0">
+						<div class="row align-items-center">
+							<div class="col-8">
+								<h3 class="mb-0">Update Information</h3>
+								<h3 class="mb-0 text-success"> @ViewBag.status</h3>							
+							</div>
+
+						</div>
+					</div>
+					@if (ViewBag.status == null)
+					{
+						<div class="card-body">
+							<form asp-action="EditProfile" onsubmit="return validateEditForm();">
+								<h6 class="heading-small text-muted mb-4">User information</h6>
+								<div class="pl-lg-4">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group focused">
+												<label class="form-control-label">First name</label>
+												<input asp-for="FirstName" type="text" class="form-control form-control-alternative" placeholder="@Model.FirstName" id="firstname">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group focused">
+												<label class="form-control-label">Last name</label>
+												<input asp-for="LastName" type="text" class="form-control form-control-alternative" placeholder="@Model.LastName" id="lastname">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group focused">
+												<label class="form-control-label">Date of Birth <span class="text-danger">(required Age from 18 to 150) (&#8727;)</span></label>
+
+												<input asp-for="DateOfBirth" type="date" id="dob" class="form-control form-control-alternative" value="@Model.DateOfBirth.ToString("yyyy/MM/dd").Replace('/','-')" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+												@* <input asp-for="DateOfBirth" type="date" class="form-control form-control-alternative" value="@Model.DateOfBirth.ToString("yyyy/MM/dd").Replace('/','-')" id="dob"> *@
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label class="form-control-label">Gender <span class="text-danger">(&#8727;)</span></label>
+												<select asp-for="Gender" id="gender" type="text" class="form-control form-control-alternative" placeholder="@Model.Gender">
+													<option value="" >--Select your Gender--</option>
+													<option value="Male" selected=@(Model.Gender =="Male" ? true : false)>Male</option>
+													<option value="Female" selected=@(Model.Gender =="Female" ? true : false)>Female</option>
+												</select>
+
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group focused">
+												<label class="form-control-label">Phone Number <span class="text-danger">(&#8727;)</span></label>
+												<input asp-for="PhoneNumber" id="phonenumber" type="text" class="form-control form-control-alternative" placeholder="@Model.PhoneNumber">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label class="form-control-label">Your Email address cant be edited</label>
+												<input type="text" class="form-control form-control-alternative" value="@Model.Email" disabled>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<hr class="my-4">
+								<!-- Address -->
+								<h6 class="heading-small text-muted mb-4">Contact information <span class="text-danger">(&#8727;)</span></h6>
+								<div class="pl-lg-4">
+									
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group focused">
+												<label class="form-control-label">Old Address</label>
+
+												<input class="form-control form-control-alternative" value="@Model.Address" placeholder="Not Updated" type="text" id="oldAddress" readonly>
+
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-lg-4">
+											<div class="form-group focused">
+												<label class="form-control-label">City/ Province</label>
+												<select class="form-control form-control-alternative" asp-items=@ViewBag.city id="city" onchange="return citySubmit();">
+													<option>--Select City--</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group focused">
+												<label class="form-control-label">District</label>
+												<select class="form-control form-control-alternative" id="district" onchange="return districtSubmit();">
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label class="form-control-label">Ward</label>
+												<select class="form-control form-control-alternative" id="ward">
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="form-group">
+												<label class="form-control-label">Street</label>
+												<input class="form-control form-control-alternative" id="house" onkeyup="return wardSubmit();">
+												<input asp-for="Address" type="hidden" id="newAddress">
+
+											</div>
+										</div>
+
+									</div>
+									<div class="col-6 text-right">
+										<input type="submit" class="btn btn-lg btn-primary border border-primary" value="Update" onMouseOver="this.style.color='#0F0';this.style.backgroundColor='#5e72e4'" onclick="return confirm('Update now ?');">
+
+									</div>
+								</div>
+							</form>
+						</div>
+					}
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function validateEditForm() {
+		// Get the value of the input field with id="firstName"
+		var firstname = document.getElementById("firstname").value;
+
+		// Get the value of the input field with id="lastName"
+		var lastname = document.getElementById("lastname").value;
+
+		// Get the value of the input field with id="dob"
+		var dob = document.getElementById("dob").value;
+
+		// Get the value of the input field with id="gender"
+		var gender = document.getElementById("gender").value;
+
+
+		// Get the value of the input field with id="phonenumber"
+		var phonenumber = document.getElementById("phonenumber").value;
+
+		var housenumber = document.getElementById("house").value;
+		var oldAddress = document.getElementById("oldAddress").value;
+
+
+
+
+
+		// Check if the firstName
+		var firstnameregEx = /^(?=.{1,40}$)[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/gm;
+		if (!firstname.match(firstnameregEx)) {
+			alert("Please enter an valid first name");
+			return false;
+		}
+
+		// Check if the lastName
+		if (!lastname.match(firstnameregEx)) {
+			alert("Please enter an valid last name");
+			return false;
+		}
+
+		//check dob
+		const birthDate = new Date(dob);
+		const today = new Date();
+		const age = today.getFullYear() - birthDate.getFullYear();
+
+		if (age <= 18 || age >= 150) {
+			alert("Please enter an valid Age");
+			return false;
+		}
+		
+		//check gender
+		if (gender == "") {
+			alert("You need to update Gender");
+			return false;
+		}
+
+		//check phonenumber
+		var VNphoneRegEx = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+		if (!phonenumber.match(VNphoneRegEx)) {
+			alert("Please enter an valid phone number, must be 10 numbers inluded 84 at begin ");
+			return false;
+		}
+		if (phonenumber == "") {
+			alert("Please enter your phone number");
+			return false;
+		}
+
+		//check address
+		if (housenumber == "" && oldAddress == "") {
+			alert("You need to update Address");
+			return false;
+		}
+
+
+		// If all checks pass, return true
+		return true;
+	}
+
+
+</script>
+
+<script>
+	function citySubmit() {
+		$.ajax({
+			url: "/Home/getDistrict",
+			type: "get",
+			data: { code: $("#city").val() },
+			success: function (res) {
+				$("#district").html('<option value ="">--Select District--</option>');
+				$.each(res.district, function (key, value) {
+					$("#district").append('<option value="' + value
+						.code + '">' + value.name + '</option>');
+				});
+				$("#ward").html('<option value="" >--Select Wards--</option>');
+
+
+
+			}
+		});
+	};
+	function districtSubmit() {
+
+		$.ajax({
+			url: "/Home/getWard",
+			type: "get",
+			data: { district: $("#district").val() },
+			success: function (res) {
+
+
+				$("#ward").html('<option value ="">Select Wards--</option>');
+				$.each(res.ward, function (key, value) {
+					$("#ward").append('<option value="' + value
+						.code + '">' + value.name + '</option>');
+				});
+			}
+		});
+	};
+	function wardSubmit() {
+		$.ajax({
+			success: function () {
+
+				var address = $("#house").val() + ", " + $("#ward option:selected").text() + ", " + $("#district option:selected").text() + ", " + $("#city option:selected").text();
+				$("#newAddress").val(address);
+				console.log(address);
+				console.log($("#newAddress").val());
+			}
+		});
+
+	};
+
+</script>

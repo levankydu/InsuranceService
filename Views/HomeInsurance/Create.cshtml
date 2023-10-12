@@ -1,0 +1,347 @@
+﻿@model test0000001.Models.DTO.HomeInsurance.HomeInsurance_PolicyHolder;
+
+@{
+    ViewData["Title"] = "Health Insurance - Sign Up";
+    var policies = ViewBag.Policy;
+    bool isFirstItem = true;
+
+}
+<style>
+    fieldset {
+        padding: 10px;
+        position: relative;
+    }
+
+    legend {
+        position: absolute;
+        top: -20px;
+        background-color: #ffffff;
+        padding: 0 10px;
+        white-space: nowrap;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 30%;
+    }
+
+    .bg-custom-blue {
+        background-color: #0C0095;
+    }
+
+    label {
+        width: 100%;
+    }
+
+    .buy-check, .gender-check {
+        display: none;
+    }
+
+    .card-input-element, .card-input-gender-element {
+        display: none;
+    }
+
+    .card-input {
+        margin: 10px;
+        padding: 00px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transition: 1s;
+    }
+
+        .card-input:hover {
+            cursor: pointer;
+        }
+
+    .card-input-element:checked + .card-input, .card-input-gender-element:checked + .card-input {
+        box-shadow: 0 0 1px 1px green;
+        transition: 1s;
+    }
+
+        .card-input-element:checked + .card-input .card-header .buy-check, .card-input-gender-element:checked + .card-input .card-body .gender-check {
+            display: inline-block;
+            color: green;
+        }
+
+    .w-15 {
+        width: 15%;
+    }
+
+    .health-input-inform.active {
+        position: relative;
+        opacity: 0.65;
+        pointer-events: none;
+    }
+</style>
+
+<div class="container-xxl">
+    <h1 class="text-center m-5">Home Insurance Sign Up Form</h1>
+    <div id="health-form-warn" class="col-12 text-center text-danger d-none mb-5">*Information is missing, please kindly cancel checking and carefully check again to make sure you have filled all fields before submitting!</div>
+    <div id="health-form-pass" class="col-12 text-center text-success d-none mb-5">It seems like all the information has been filled in, please ensure that everything is correctly placed, if all are correct, don't hesitate to submit your information to get our best service!</div>
+    @if (ViewBag.MsgSuccess != null)
+    {
+        <h3 class="text-success text-center border border-success rounded p-5">@ViewBag.MsgSuccess</h3>
+        <div class="d-flex justify-content-center">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-lg btn-primary">Back to home</a>
+        </div>
+    }
+    @if (ViewBag.MsgError != null)
+    {
+        <h3 class="text-danger text-center border border-danger rounded p-5">@ViewBag.MsgError</h3>
+        <div class="d-flex justify-content-center">
+            <a asp-action="Index" asp-controller="HealthInsurance" class="btn btn-lg btn-primary">Back to Health Insurance</a>
+        </div>
+    }
+    @if (ViewBag.Policies != null)
+    {
+        <form id="health-create-form" asp-action="Create" asp-controller="HomeInsurance" class="row g-3 was-validated" enctype="multipart/form-data">
+            <fieldset class="border border-3 rounded shadow-sm bg-light pt-4 pb-3">
+                <legend class="border border-2 rounded shadow bg-custom-blue text-light fs-3">Policy Option</legend>
+                <div class="row health-input-inform">
+                    @foreach (var item in ViewBag.Policies)
+                    {
+                        <div class="col-12 col-lg-3 p-2">
+                            <label>
+                                @if (isFirstItem)
+                                {
+                                    <input type="radio" asp-for="Policyholder!.PolicyId" value="@item.Id" class="card-input-element" checked />
+                                    isFirstItem = false;
+                                }
+                                else
+                                {
+                                    <input type="radio" asp-for="Policyholder!.PolicyId" value="@item.Id" class="card-input-element" required />
+                                }
+
+                                <div class="card card-input px-0">
+                                    <h5 class="card-header">
+                                        <span class="float-start">@item.Name</span>
+                                        <span class="buy-check float-end">&#10004;</span>
+                                    </h5>
+                                    <div class="card-body">
+                                        <h5 class="card-title">@((item.Premium).ToString("C"))</h5>
+                                        <p class="">
+                                            <span class="fw-bolder text-dark">Term:</span> @(item.Duration.Term) (month)
+                                            <br>
+                                            <span class="fw-bolder text-dark">Period:</span> @(item.Duration.Term / item.Duration.TotalPeriod) (month/period)
+                                            <br />
+                                            <span class="fw-bolder text-dark">Total Period:</span> @(item.Duration.TotalPeriod) (period)
+                                            <br />
+                                            <span class="fw-bolder text-dark">Payment/Period:</span> @((item.Premium / item.Duration.TotalPeriod).ToString("C"))
+                                        </p>
+                                        <p class="card-text">@item.Description</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+
+            <div class="container w-75">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Register For Private Information</h4>
+                        <h5 class="text-danger">@ViewBag.MsgError</h5>
+                        <h5 class="text-success">@ViewBag.MsgSuccess</h5>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="form-group">
+                                        <label>What is your current address? </label>
+                                        <input asp-for="HomeInsurance!.Address" class="form-control" required />
+                                        <span asp-validation-for="HomeInsurance!.Address" class="text-danger"></span>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label>What year was the building built?</label>
+                                        <input asp-for="HomeInsurance!.YearBuilt" class="form-control" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>It is an apartment or private house?</label>
+                                            <div class="form-check">
+                                            <input type="radio" asp-for="HomeInsurance!.Structure" value="apartment" class="form-check-input" required />
+                                                <label class="form-check-label" for="Structure_Option1">Apartment</label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input type="radio" asp-for="HomeInsurance!.Structure" value="private house" class="form-check-input" required />
+                                                <label class="form-check-label" for="Structure_Option2">Private house</label>
+                                            </div>
+                                            <!-- Thêm các tùy chọn khác nếu cần -->
+                                        <span asp-validation-for="HomeInsurance!.Structure" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>How many floors does the building have?</label>
+                                        <input asp-for="HomeInsurance!.NumberOfBasement" class="form-control" required />
+                                        <span asp-validation-for="HomeInsurance!.NumberOfBasement" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>What is the area of the building?</label>
+                                        <input asp-for="HomeInsurance!.Area" class="form-control" required />
+                                        <span asp-validation-for="HomeInsurance!.Area" class="text-danger"></span>
+                                        </div>
+                                    <div class="form-group container-xxl health-input-inform row">
+                                        <label class="form-label">Upload Photos:</label>
+                                        <input class="form-control form-control-file" type="file" multiple name="photos"/>
+                                        </div>
+                                        <br />
+                                       @* <div class="form-group">
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          
+            <div class="col-12 text-center">
+                <a id="cancelButton" class="btn btn-lg btn-outline-danger d-none">Cancel check form</a>
+                <a id="checkButton" class="btn btn-lg btn-outline-primary">Check form</a>
+                <button id="submitButton" class="btn btn-lg btn-outline-primary d-none" type="submit">Submit form</button>
+            </div>
+        </form>
+    }
+    <a asp-action="Introduce" asp-controller="HomeInsurance" class="btn btn-secondary">Back to Home Insurance</a>
+</div>
+
+<script>
+    window.addEventListener('keydown', function (e) {
+        if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+            if (e.target.nodeName == 'INPUT') {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, true);
+
+    const myForm = document.querySelector("#health-create-form");
+    const inputs = myForm.getElementsByTagName("input");
+
+    function dobValidation() {
+        const dob = document.getElementById("dob-input").value;
+        const dobWarn = document.getElementById("dob-warn");
+
+        let birthDate = new Date(dob);
+        let today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        console.log(age)
+        if (age = 0 || age > 80) {
+            dobWarn.textContent = "Age must be greater than 0 and less than 80";
+            dobWarn.classList.remove("d-none");
+            dobWarn.classList.add("d-block");
+            return false;
+        }
+
+        if (age < 0) {
+            dobWarn.textContent = "DoB must be smaller than " + today;
+            dobWarn.classList.remove("d-none");
+            dobWarn.classList.add("d-block");
+            return false;
+        }
+
+        return true;
+    }
+
+    function readFile(input) {
+        let file = input.files[0];
+
+
+        if (!file.type.startsWith('image/')) {
+            input.value = '';
+            return;
+        } else {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                const imgTag = document.getElementById("photoo" + input.getAttribute("data-photoo-side"));
+                imgTag.classList.remove("d-none");
+                imgTag.classList.add("d-block");
+                imgTag.src = reader.result;
+            };
+        }
+    };
+
+    document.querySelector("#checkButton").addEventListener("click", function (e) {
+        e.preventDefault();
+        let allFieldsFilled = true;
+
+        $("html, body").animate({
+            scrollTop: $("#health-form-warn").offset().top
+        }, 200);
+
+        $(".health-input-inform").each(function (index, element) {
+            $(element).addClass("active");
+            $(element).find("input").attr("readonly", true);
+        });
+
+        $(".form-confirm-checkbox").find("input").attr("disabled", true);
+
+        for (var i = 0; i < inputs.length; i++) {
+            if ((inputs[i].type === "text" || inputs[i].type === "number" || inputs[i].type === "date") && inputs[i].value.trim() === "") {
+                allFieldsFilled = false;
+                break;
+            }
+            if (inputs[i].type === "checkbox" && !inputs[i].checked) {
+                allFieldsFilled = false;
+                break;
+            }
+            if (inputs[i].type === "file" && inputs[i].files.length <= 0) {
+                allFieldsFilled = false;
+                break;
+            }
+        }
+
+        if (allFieldsFilled) {
+            $("#submitButton").prop("disabled", false);
+            $("#health-form-pass").removeClass("d-none");
+            $("#health-form-pass").addClass("d-inline-block");
+        } else {
+            $("#submitButton").prop("disabled", true);
+            $("#health-form-warn").removeClass("d-none");
+            $("#health-form-warn").addClass("d-inline-block");
+        }
+
+        $("#submitButton").removeClass("d-none");
+        $("#submitButton").addClass("d-inline-block");
+        $("#cancelButton").removeClass("d-none");
+        $("#cancelButton").addClass("d-inline-block");
+        $(this).addClass("d-none");
+    });
+
+    document.querySelector("#cancelButton").addEventListener("click", function (e) {
+        e.preventDefault();
+        $(this).addClass("d-none");
+        $(".health-input-inform").each(function (index, element) {
+            $(element).removeClass("active");
+            $(element).find("input").attr("readonly", false);
+        });
+        $(".form-confirm-checkbox").find("input").attr("disabled", false);
+        $("#checkButton").removeClass("d-none");
+        $("#checkButton").addClass("d-inline-block");
+        $("#submitButton").removeClass("d-inline-block");
+        $("#submitButton").addClass("d-none");
+        $("#health-form-warn").removeClass("d-inline-block");
+        $("#health-form-warn").addClass("d-none");
+        $("#health-form-pass").removeClass("d-inline-block");
+        $("#health-form-pass").addClass("d-none");
+    });
+
+    document.querySelector("#submitButton").addEventListener("click", function (e) {
+        e.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "Once submitted, you will not be able to edit this form!",
+            icon: "info",
+            buttons: true,
+        })
+            .then((isAccept) => {
+                if (isAccept) {
+                    document.querySelector("#health-create-form").submit();
+                }
+            });
+    });
+</script>

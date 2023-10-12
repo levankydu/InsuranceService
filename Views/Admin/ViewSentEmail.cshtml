@@ -1,0 +1,44 @@
+﻿@model test0000001.Models.GuestMessage
+
+
+@{
+    ViewData["Title"] = "View Message";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<div class="container w-75">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">View Email</h4>
+            <h5 class="text-success">@ViewBag.status</h5>
+        </div>
+        <div class="card-content">
+            <div class="card-body">
+                <form >
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="Email">Email To:</label>
+                                    <input asp-for="Email" type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="AdminAnswer">Content</label>
+                                    <textarea asp-for="AdminAnswer" type="text" class="form-control" rows="5" readonly></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end">
+                                
+                                <a asp-action="ListContactMessage" asp-controller="Admin" class="btn btn-light-secondary me-1 mb-1">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PaypalPaymentDto
+
+@{
+    ViewData["Title"] = "Package Registration";
+    Layout = "/Views/LifeInsurance/_EmailLayout.cshtml";
+    var package = ViewBag.Package as test0000001.Models.Policy;
+    string personTitle = Model.PackageOverview?.InsuredObject.Gender switch
+    {
+        Gender.Male => "Mr.",
+        Gender.Female => "Mrs.",
+        _ => "Mr. / Mrs."
+    };
+}
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="ffffff" class="bg_color">
+
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
+
+                <tr>
+                    <td align="center" style="color: #343434; font-size: 24px; font-family: Quicksand, Calibri, sans-serif; font-weight:700;letter-spacing: 3px; line-height: 35px;"
+                        class="main-header">
+                        <!-- section text ======-->
+
+                        <div style="line-height: 35px">
+                            Payment for Subscription of the Package<br />
+                            <span style="color: #5caad2;">@Model.PackageOverview?.Package?.Name</span> <br />
+                            has been succeeded
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="center">
+                        <table border="0" width="40" align="center" cellpadding="0" cellspacing="0" bgcolor="eeeeee">
+                            <tr>
+                                <td height="2" style="font-size: 2px; line-height: 2px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td height="20" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="left">
+                        <table border="0" width="759" align="center" cellpadding="0" cellspacing="0" class="container590">
+                            <tr>
+                                <td align="left" style="color: #888888; font-size: 16px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <!-- section text ======-->
+
+                                    <p style="line-height: 24px; margin-bottom:15px;">
+                                        Dear @personTitle @Model.PackageOverview?.InsuredObject.Name,
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:15px;">
+
+                                        Thank you for using our services as well as being an enthusiastic companion with us so far.
+                                        Your payment for the subscription was successfully processed. The details are as below:
+                                        <br />
+                                        <br />
+                                        <div bgcolor="#d7d7d7" class="generic-template" style="-moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased; background-color: #d7d7d7; margin: 0; padding: 0;">
+                                            <!-- Content Start -->
+                                            <table cellpadding="0" cellspacing="0" cols="1" bgcolor="#d7d7d7" align="center" style="max-width: 600px;">
+                                                <tr bgcolor="#d7d7d7">
+                                                    <td height="50" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                </tr>
+
+                                                <!-- This encapsulation is required to ensure correct rendering on Windows 10 Mail app. -->
+                                                <tr bgcolor="#d7d7d7">
+                                                    <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                        <!-- Seperator Start -->
+                                                        <table cellpadding="0" cellspacing="0" cols="1" bgcolor="#d7d7d7" align="center" style="max-width: 600px; width: 100%;">
+                                                            <tr bgcolor="#d7d7d7">
+                                                                <td height="30" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                        </table>
+                                                        <!-- Seperator End -->
+                                                        <!-- Generic Pod Left Aligned with Price breakdown Start -->
+                                                        <table align="center" cellpadding="0" cellspacing="0" cols="3" bgcolor="white" class="bordered-left-right" style="border-left: 10px solid #d7d7d7; border-right: 10px solid #d7d7d7; max-width: 600px; width: 100%;">
+                                                            <tr height="50"><td colspan="3" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td></tr>
+                                                            <tr align="center">
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                <td class="text-primary" style="color: #5caad2; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75"
+                                                                         fill="currentColor" viewBox="0 0 16 16">
+                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                                    </svg>
+                                                                </td>
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                            <tr height="17"><td colspan="3" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td></tr>
+                                                            <tr align="center">
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                <td class="text-primary" style="color: #5caad2; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                    <h1 style="color: #5caad2; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 34px; margin-bottom: 0; margin-top: 0;">Payment receipt</h1>
+                                                                </td>
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                            <tr height="30"><td colspan="3" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td></tr>
+
+                                                            <tr align="left">
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                    <p style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 22px; margin: 0; ">
+                                                                        Transaction No. : <strong>@Model.Payment?.Id</strong> <br />
+                                                                        Transaction date: <strong>@Model.Payment?.CreatedAt</strong> <br />
+                                                                        Transaction status: <strong style="color: #14A44D;">@PaymentStatus.Success</strong> <br />
+                                                                        Policyholder: <strong style="text-transform: uppercase;">
+                                                                            @Model.PackageOverview?.User.FirstName
+                                                                            @Model.PackageOverview?.User.LastName
+                                                                        </strong> <br />
+                                                                        Amount: <strong>@Model.Payment?.Amount USD</strong> <br />
+                                                                        Description: <strong>
+                                                                            @Model.PaidItem?.Description for the package
+                                                                            "@Model.PackageOverview?.Package?.Name?.ToUpper()"
+                                                                            [#ref: @Model.PackageOverview?.InsuredObject.AppraisalManifestId]
+                                                                        </strong> <br />
+                                                                    </p>
+                                                                    <br>
+                                                                    <p style="color: #DC143C; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 22px; margin: 0; font-style: italic;">We advise to keep this payment voucher for further reference.&nbsp;&nbsp;&nbsp;&nbsp;<br /></p>
+                                                                </td>
+                                                                <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                            <tr height="30">
+                                                                <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                <td style="border-bottom: 1px solid #D3D1D1; color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                            <tr height="30"><td colspan="3" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td></tr>
+                                                            @if (Model.NextPaidItem != null)
+                                                            {
+                                                                <tr align="center">
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                    <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                        <p style="color: #5caad2; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 22px; margin: 0;"><strong>Next due payment detail</strong></p>
+                                                                        <br>
+                                                                    </td>
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                </tr>
+                                                                <tr align="left">
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                    <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                        <p style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 22px; margin: 0; ">
+                                                                            Due date: <span style="color: #DC143C;">@Model.NextPaidItem?.DueDate.ToString("dd MMMM yyyy")</span> <br />
+                                                                            Amount: <span>@Model.NextPaidItem?.Amount USD</span> <br />
+                                                                            Description: <span>@Model.NextPaidItem?.Description</span>
+                                                                        </p>
+                                                                    </td>
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr align="center">
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                    <td style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;">
+                                                                        <p style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 22px; margin: 0;">
+                                                                            Congratulations, your subscription has been fully paid. We hope that you will find the joy and satisfaction with this package.
+                                                                        </p>
+                                                                        <br>
+                                                                    </td>
+                                                                    <td width="36" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                                </tr>
+                                                            }
+                                                            <tr height="50">
+                                                                <td colspan="3" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+
+                                                        </table>
+                                                        <!-- Generic Pod Left Aligned with Price breakdown End -->
+                                                        <!-- Seperator Start -->
+                                                        <table cellpadding="0" cellspacing="0" cols="1" bgcolor="#d7d7d7" align="center" style="max-width: 600px; width: 100%;">
+                                                            <tr bgcolor="#d7d7d7">
+                                                                <td height="50" style="color: #464646; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 16px; vertical-align: top;"></td>
+                                                            </tr>
+                                                        </table>
+                                                        <!-- Seperator End -->
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!-- Content End -->
+                                        </div>
+                                        <br />
+                                        <br />
+                                        In the mean time, in case of any inquires occurred, please feel free to contact us.
+                                        <br />
+                                        <br />
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px;">
+                                        You can access your account at any point using the link below.
+                                    </p>
+                                    <table border="0" align="center" width="180" cellpadding="0" cellspacing="0" bgcolor="5caad2" style="margin-bottom:20px;">
+
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="center" style="color: #ffffff; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 22px; letter-spacing: 2px;">
+                                                <!-- main section button -->
+
+                                                <div style="line-height: 22px;">
+                                                    <a href="" style="color: #ffffff; text-decoration: none;">MY ACCOUNT</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+
+                                    </table>
+                                    <p style="line-height: 24px">
+                                        Love,<br />
+                                        Insurance Service
+                                    </p>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
+    </tr>
+
+</table>
+

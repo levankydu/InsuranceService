@@ -1,0 +1,241 @@
+﻿@model test0000001.Models.ApplicationUser
+
+@section Css{
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="~/Profile/site.css" rel="stylesheet" />
+	<style>
+
+		.navbar.sticky-top {
+			top: 0px !important;
+		}
+
+		label#ProfilePicture {
+			cursor: pointer;
+			/* Style as you please, it will become the visible UI component. */
+		}
+
+		#upload-photo {
+			opacity: 0;
+			position: absolute;
+			z-index: -1;
+		}
+		.redPlaceholder::placeholder{
+			color:red;
+			opacity:75%;
+		}
+
+	</style>
+
+}
+
+@{
+	ViewData["Title"] = "Profile Page";
+}
+
+
+
+
+<div class="container-fluid p-0">
+	<!-- Header -->
+	<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80); background-size: cover; background-position: center top;">
+		<!-- Mask -->
+		<span class="mask bg-gradient-default opacity-8"></span>
+		<!-- Header container -->
+		<div class="container-fluid d-flex align-items-center">
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<h1 class="display-2 text-white">Hello @Model.FirstName @Model.LastName</h1>
+					<p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your Policyholder and manage this</p>
+					<a asp-action="EditProfile" class="btn btn-info">Edit profile</a>
+					<a asp-action="ChangePassword" class="btn btn-info">Change Password</a>
+					@if (User.IsInRole("user"))
+					{
+						<a asp-action="PolicyHolder" class="btn btn-info">Policy Holder</a>
+						<a asp-action="ContactUs" asp-controller="Home" class="btn btn-info">You need Disbursement,let submit our form </a>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page content -->
+	<div class="container-fluid mt--7">
+		<div class="row">
+			<div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+				<div class="card card-profile shadow">
+					<div class="row justify-content-center">
+						<div class="col-lg-3 order-lg-2">
+							<div class="card-profile-image">
+								@if (Model.ProfilePicture != null)
+								{
+									<a href="#">
+										<img src="~/@Model.ProfilePicture" width="400%" height="170px" class="rounded-circle">
+									</a>
+								}
+								else
+								{
+
+									<a href="#">
+										<img src="https://png.pngtree.com/png-vector/20190704/ourmid/pngtree-broker-icon-in-trendy-style-isolated-background-png-image_1539887.jpg" class="rounded-circle">
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+					<div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+					</div>
+					<div class="card-body pt-0 pt-md-4">
+						<div class="row">
+							<div class="col">
+								<div class="card-profile-stats d-flex justify-content-center mt-md-5">
+									<div>
+										<span class="heading"></span>
+										<span class="description"></span>
+									</div>
+									<div>
+										<span class="heading"></span>
+										<span class="description"></span>
+									</div>
+									<div>
+										<span class="heading"></span>
+										<span class="description"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<form asp-action="ChangeProfilePicture" asp-controller="Home" method="post" enctype="multipart/form-data">
+							<div class="text-center">
+								<div class="d-flex justify-content-between" style="justify-content:center!important">
+									<label for="upload-photo" id="ProfilePicture" class="btn btn-sm btn-default float-right">
+										Change Profile Picture
+									</label>
+									<input type="file" name="photo" id="upload-photo" onchange="return form.submit();" />
+
+									@* <a href="#" class="btn btn-sm btn-default float-right">Change Profile Picture</a> *@
+								</div>
+
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-8 order-xl-1">
+				<div class="card bg-secondary shadow">
+					<div class="card-header bg-white border-0">
+						<div class="row align-items-center">
+							<div class="col-8">
+								<h3 class="mb-0">My account</h3>
+							</div>
+
+						</div>
+					</div>
+					<div class="card-body">
+						<form>
+							<h6 class="heading-small text-muted mb-4">User information</h6>
+							<div class="pl-lg-4">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group focused">
+											<label class="form-control-label" for="input-first-name">First name</label>
+											<input type="text" class="form-control form-control-alternative" placeholder="@Model.FirstName" disabled>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group focused">
+											<label class="form-control-label" for="input-last-name">Last name</label>
+											<input type="text" class="form-control form-control-alternative" placeholder="@Model.LastName" disabled>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group focused">
+											
+											@if (DateTime.Now.Year - Model.DateOfBirth.Year <= 150 && DateTime.Now.Year - Model.DateOfBirth.Year >= 18)
+											{
+												<label class="form-control-label">Day of Birth  <span class="text-danger">(yyyy-dd-mm)</span></label>
+												<input type="text" class="form-control form-control-alternative" placeholder="@Model.DateOfBirth.ToString("yyyy/MM/dd").Replace('/','-')" disabled>
+											}
+											else
+											{
+												<label class="form-control-label ">Day of Birth <span class="text-danger">(&#8727;)</span></label>
+												<input type="text" class="form-control form-control-alternative redPlaceholder" placeholder="Need to update" disabled>
+
+											}
+
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											
+											@if (Model.Gender != null)
+											{
+												<label class="form-control-label">Gender</label>
+												<input type="text" class="form-control form-control-alternative" placeholder="@Model.Gender" disabled>
+											}
+											else
+											{
+												<label class="form-control-label">Gender <span class="text-danger">(&#8727;)</span></label>
+												<input type="text" class="form-control form-control-alternative redPlaceholder" placeholder="Need to update" disabled>
+											}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group focused">
+											
+											@if (Model.PhoneNumber != null)
+											{
+												<label class="form-control-label">Phone Number</label>
+												<input type="text" class="form-control form-control-alternative" placeholder="@Model.PhoneNumber" disabled>
+
+											}
+											else
+											{
+												<label class="form-control-label">Phone Number <span class="text-danger">(&#8727;)</span></label>
+												<input type="text" class="form-control form-control-alternative redPlaceholder" placeholder="Need to update" disabled>
+											}
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label class="form-control-label">Email address</label>
+											<input type="text" class="form-control form-control-alternative" value="@Model.Email" disabled>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<hr class="my-4">
+							<!-- Address -->
+							<h6 class="heading-small text-muted mb-4">Contact information</h6>
+							<div class="pl-lg-4">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group focused">
+											
+											@if (Model.Address != null)
+											{
+												<label class="form-control-label">Address</label>
+												<input class="form-control form-control-alternative" placeholder="@Model.Address" disabled>
+											}
+											else
+											{
+												<label class="form-control-label">Address <span class="text-danger">(&#8727;)</span></label>
+												<input class="form-control form-control-alternative redPlaceholder" disabled placeholder="Need to update" type="text">
+											}
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

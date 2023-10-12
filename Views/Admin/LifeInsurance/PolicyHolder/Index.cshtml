@@ -1,0 +1,128 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance;
+@model IEnumerable<test0000001.Models.Policyholder>
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Life Insurance Policy Holder";
+    var dueCounts = ViewBag.DueCounts as List<test0000001.Models.DTO.LifeInsurance.DuePaymentCountDto>;
+}
+
+@section Css {
+    <link rel="stylesheet" href="/AdminLibrary/assets/vendors/simple-datatables/style.css">
+
+    <style>
+        table .desc-col-width {
+            width: 35% !important;
+        }
+
+        .bg-warning {
+            color: #212529 !important;
+        }
+    </style>
+}
+
+
+<div class="page-heading">
+    <h3>Life Insurance Policy Holder Management</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <p>
+            <a asp-action="Index" asp-controller="LifeInsurance" class="btn btn-sm btn-primary">
+                Go Back
+            </a>
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover table-striped" id="policyHolderManagement">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Policy!.Name)
+                            </th>
+                            <th scope="col">Term (yrs)</th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Policy!.Premium)
+                            </th>
+                            <th scope="col">Policyholder</th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.LifeInsuredObject!.Name)
+                            </th>
+                            <th scope="col">Age</th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.StartDay)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var dueCount = dueCounts?
+                            .FirstOrDefault(m => m.PolicyHolderId.Equals(item.Id))
+                            ?.DueCount;
+
+                            <tr>
+                                <td scope="row" class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td class="align-top">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="position-relative">
+                                        @Html.DisplayFor(modelItem => item.Policy!.Name)
+                                        @if (dueCount > 0)
+                                        {
+                                            <span class="position-absolute translate-middle badge bg-danger rounded-circle"
+                                                  style="font-size: 0.6rem; top: 8%; left: 106%;">@dueCount</span>
+                                        }
+                                    </a>
+                                </td>
+                                <td class="align-top">
+                                    @(item.Policy!.Duration != null ? item.Policy!.Duration.Term / 12 : "")
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Policy!.Premium)
+                                </td>
+                                <td class="align-top">
+                                    @item.User!.FirstName @item.User!.LastName
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.LifeInsuredObject!.Name)
+                                </td>
+                                <td class="align-top">
+                                    @item.LifeInsuredObject!.DateOfBirth.GetCurrentAge()
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.StartDay)
+                                </td>
+                                <td class="align-top">
+                                    <span class="badge @Html.PolicyStatusCss(item.Status)">@item.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts
+    {
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/AdminLibrary/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        const table = document.querySelector("#policyHolderManagement");
+        const dataTable = new simpleDatatables.DataTable(table);
+    </script>
+
+}  

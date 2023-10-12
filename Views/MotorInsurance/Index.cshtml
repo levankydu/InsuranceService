@@ -1,0 +1,42 @@
+﻿@model IEnumerable<test0000001.Models.CarInsuredObject>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="form-group">
+    <a asp-action="CreateHolder" class="btn btn-primary">Counsel policy</a> 
+</div>
+@if (!string.IsNullOrEmpty(ViewBag.MsgError))
+{
+    <h5 class="text-danger">@ViewBag.MsgError</h5>
+}
+@if (!string.IsNullOrEmpty(ViewBag.MsgSuccess))
+{
+    <h5 class="text-success">@ViewBag.MsgSuccess</h5>
+}
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center mb-5">
+                <h2 class="text-black">Your Car</h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-6 col-md-4 col-lg-3 mb-4 text-center">
+                    <fieldset class="border border-2 rounded shadow-sm bg-light pt-4 pb-3">
+                        <div class="mb-5">
+                            <h2>@item.Automaker</h2>
+                            <span>Car brand: @item.CarBand</span> <br>
+                            <span>Car type:  @item.CarType</span> <br>
+                            <span>Register in city: @item.CityOfCarReg</span> <br>
+                            
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+        </div>
+    </div>
+</div>

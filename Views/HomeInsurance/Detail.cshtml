@@ -1,0 +1,123 @@
+﻿@model test0000001.Models.DTO.HomeInsurance.Home_Insurance
+
+@{
+    ViewData["Title"] = "Deital";
+}
+
+<div class="page-title">
+    <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-last">
+            <h3>Detail Home Insurance </h3>
+            <p class="text-subtitle text-muted">
+            </p>
+        </div>
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb"
+                 class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-action="Display" asp-controller="Admin">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        List Policy Holder
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Policy Holder Details
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<h3 class="text-danger">@ViewBag.MsgError</h3>
+<h3 class="text-success">@ViewBag.MsgSuccess</h3>
+
+<div class="container">
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.YearBuilt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.YearBuilt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Structure)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Structure)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfBasement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfBasement)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Photos)
+        </dt>
+        @if (Model.Photos != null)
+        {
+            
+            <dd class="col-sm-10 mt-4">
+                <table class="table table-striped">
+                    @foreach (var photo in Model.Photos)
+                    {
+                            <tr>
+                                <td>
+                                    <img src="@photo.PhotoUrl" width="500" height="300" />
+                                </td>
+                            </tr>
+
+                    }
+                </table>
+            </dd>
+        }
+      
+
+    </dl>
+</div>
+
+<a asp-action="Index">Back to List</a>
+
+<script>
+    document.querySelector("#reject-button").addEventListener("click", function (e) {
+        e.preventDefault();
+        swal({
+            title: "Are you sure to reject?",
+            text: "Once submitted, you will not be able to reverse this action!",
+            icon: "info",
+            buttons: true,
+            dangerMode: true
+        })
+            .then((isAccept) => {
+                if (isAccept) {
+                    document.querySelector("#type-submit").value = "Reject";
+                    document.querySelector("#action-form").submit();
+                }
+            });
+    });
+    document.querySelector("#approve-button").addEventListener("click", function (e) {
+        e.preventDefault();
+        swal({
+            title: "Are you sure to approve?",
+            text: "Once submitted, you will not be able to reverse this action!",
+            icon: "info",
+            buttons: true,
+        })
+            .then((isAccept) => {
+                if (isAccept) {
+                    document.querySelector("#type-submit").value = "Approve";
+                    document.querySelector("#action-form").submit();
+                }
+            });
+    });
+</script>

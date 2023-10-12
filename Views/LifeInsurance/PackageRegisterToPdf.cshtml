@@ -1,0 +1,186 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    ViewData["Title"] = "Package Registration";
+    Layout = null;
+    //Layout = "/Views/LifeInsurance/_ContractLayout.cshtml";
+    //var package = ViewBag.Package as test0000001.Models.Policy;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Package Registration</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
+    <!-- Favicon -->
+    <link href="~/HomeLibrary/img/favicon.ico" rel="icon" />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@600;700&display=swap"
+          rel="stylesheet" />
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+          rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+          rel="stylesheet" />
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/HomeLibrary/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <!-- Template Stylesheet -->
+    <link href="~/HomeLibrary/css/style.css" rel="stylesheet" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* background-color: #FAFAFA; */
+        }
+
+        * {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        /* .page {
+                    width: 21cm;
+                    min-height: 29.7cm;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                }
+
+                @@page {
+                    margin: 0;
+                }
+
+                @@media print {
+                    .page {
+                        margin: 0;
+                        border: initial;
+                        border-radius: initial;
+                        width: initial;
+                        min-height: initial;
+                        box-shadow: initial;
+                        background: initial;
+                        page-break-after: always;
+                    }
+                } */
+
+        .my-page-cover {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            background-repeat: no-repeat;
+            height: 29.7cm;
+            position: relative;
+        }
+
+            .my-page-cover img {
+                object-fit: contain;
+                margin: auto;
+                display: block;
+            }
+
+        .my-page-title {
+            position: absolute;
+            bottom: 160px;
+            left: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <main role="main">
+            <div class="container-fluid g-0">
+                <!-- Page Header Start -->
+                <div class="row my-page-cover">
+                    <img class="my-page-cover-img" src="https://imgur.com/wGITRxJ.jpg" />
+                    <div class="my-page-title">
+                        <h1 class="display-4 animated slideInDown mb-4">Life Insurance <br />eContract</h1>
+                        <div class="fw-bold">For the Package: <span class="text-primary">@Model.Package?.Name</span></div>
+                        <div class="fw-bold">Contract No. : <span class="text-primary">@Model.InsuredObject.AppraisalManifestId</span></div>
+                    </div>
+
+                </div>
+                <!-- Page Header End -->
+                <!-- Service Start -->
+                <div class="row justify-content-center p-5">
+                    <div class="page-content page">
+
+                       <!-- General Infos Start -->
+                        @await Html.PartialAsync("/Views/LifeInsurance/_PackageGeneralInfo.cshtml")
+                       <!-- General Infos End -->
+
+                        <!-- Appraisal Dossiers Start -->
+                        <section class="row mt-3">
+                            <div class="text-uppercase h5 border-bottom border-primary text-primary">
+                                IV. Attachments
+                            </div>
+                            <dl class="row">
+                                <dt class="col-sm-3">
+                                    Citizen Identification
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <a href="/@Model.AppraisalDossier.Identification" target="_blank" rel="noopener noreferrer">
+                                        @Html.GetFileName(Model.AppraisalDossier.Identification)
+                                    </a>
+                                </dd>
+
+                                <dt class="col-sm-3">
+                                    Health Certification
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <a href="/@Model.AppraisalDossier.HealthCertification" target="_blank" rel="noopener noreferrer">
+                                        @Html.GetFileName(Model.AppraisalDossier.HealthCertification)
+                                    </a>
+                                </dd>
+
+                                <dt class="col-sm-3">
+                                    Other File (if any)
+                                </dt>
+                                <dd class="col-sm-9">
+                                    <a href="/@Model.AppraisalDossier.Other" target="_blank" rel="noopener noreferrer">
+                                        @Html.GetFileName(Model.AppraisalDossier.Other)
+                                    </a>
+                                </dd>
+
+                                <dt class="col-sm-3">
+                                    Other File Description (if any)
+                                </dt>
+                                <dd class="col-sm-9">
+                                    @Model.AppraisalDossier.OtherDescription
+                                </dd>
+                            </dl>
+                        </section>
+                        <!-- Appraisal Dossiers End -->
+
+                        <!-- General Terms Start-->
+                        @await Html.PartialAsync("/Views/LifeInsurance/_GeneralTerms.cshtml")
+                        <!-- General Terms End-->
+                    </div>
+
+                </div>
+            </div>
+            <!-- Service End -->
+        </main>
+    </div>
+
+    <!-- Template Javascript -->
+    <script>
+        $(':radio:not(:checked)').attr('disabled', true);
+    </script>
+</body>
+</html>

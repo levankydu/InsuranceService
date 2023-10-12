@@ -1,0 +1,479 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    ViewData["Title"] = "Package Overview";
+}
+
+@section Css {
+    <style>
+        .my-page-header {
+            background-image: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.65) 70%, rgba(255,255,255,0.3) 100%), url('/@Model.Package?.Image');
+            background-color: #fff;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        dt {
+            font-weight: normal;
+        }
+    </style>
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header my-page-header py-5 mb-5 wow fadeIn"
+     data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-4 animated slideInDown mb-4">Package Registering</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/LifeInsurance">Life Insurance</a></li>
+                <li class="breadcrumb-item"><a href="/LifeInsurance/@Model.Package?.Slug">@Model.Package?.Name</a></li>
+                <li class="breadcrumb-item active" aria-current="#">Package Overview</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Service Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto" style="max-width: 85%">
+            <h1 class="display-6 mb-5">
+                Package registration is almost complete.
+                <br />
+                Please take a look for your information just provided to us.
+            </h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex align-items-center ms-n5 mb-1">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            @* <img class="img-fluid"
+                            src="~/@item.Image" style="width: 80px; height: auto; border-radius: 5%;"
+                            alt="@item.Name" /> *@
+                        </div>
+                        <h4 class="mb-0 text-uppercase">Overview for package: @Model.Package?.Name</h4>
+                    </div>
+
+
+                    <form action="/LifeInsurance/@Model.Package?.Slug/PackageRegister-Finalize"
+                          method="post"
+                          id="packageOverview">
+                        <div class="page-content">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-10">
+                                    <!-- Package Infos Start -->
+                                    <section class="row mt-4">
+                                        <div class="text-uppercase h5 border-bottom border-primary text-primary">
+                                            I. Package Information
+                                        </div>
+                                        <dl class="row">
+                                            <dt class="col-sm-3">Package Name</dt>
+                                            <dd class="col-sm-9 text-uppercase fw-bold">
+                                                @Model.Package?.Name
+                                            </dd>
+
+                                            <dt class="col-sm-3">Term</dt>
+                                            <dd class="col-sm-9 fw-bold text-primary">
+                                                @(Model.Package?.Duration?.Term / 12) years
+                                            </dd>
+
+                                            <dt class="col-sm-3">Premium</dt>
+                                            <dd class="col-sm-9 fw-bold text-primary">
+                                                @Model.Package?.Premium USD
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Intended effective date
+                                            </dt>
+                                            <dd class="col-sm-9 fw-bold text-danger">
+                                                @Model.PolicyHolder.StartDay.ToString("dd MMMM yyyy")
+                                            </dd>
+                                            
+                                            <dt class="col-sm-3">Description</dt>
+                                            <dd class="col-sm-9">
+                                                @Html.Raw(Model.Package?.Description)
+                                            </dd>
+                                        </dl>
+                                    </section>
+                                    <!-- Package Infos End -->
+                                    <!-- Insured Object Start -->
+                                    <section class="row">
+                                        <div class="text-uppercase h5 border-bottom border-primary text-primary">
+                                            II. General Information
+                                        </div>
+                                        <dl class="row">
+                                            <dt class="col-sm-3">
+                                                Package purshaser
+                                            </dt>
+                                            <dd class="col-sm-9 text-uppercase fw-bold">
+                                                @(Model.User.FirstName + Model.User.LastName)
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Insured person name
+                                            </dt>
+                                            <dd class="col-sm-9 text-primary text-uppercase fw-bold">
+                                                @Model.InsuredObject.Name
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Relationship with the purchaser
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @foreach (var item in (InsuredRelation[])Enum.GetValues(typeof(InsuredRelation)))
+                                                {
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio"
+                                                               asp-for="@Model.InsuredObject.InsuredRelation"
+                                                               id="InsuredRelation-@item"
+                                                               value="@item"
+                                                               readonly
+                                                               class="form-check-input" />
+                                                        <label for="InsuredRelation-@item"
+                                                               class="form-check-label text-capitalize me-1">@item.GetDisplayName()</label>
+                                                    </div>
+                                                }
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Relationship Detail (if any)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.InsuredRelationDetail
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Date of Birth
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.DateOfBirth.ToString("dd MMMM yyyy")
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Gender
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @foreach (var item in (Gender[])Enum.GetValues(typeof(Gender)))
+                                                {
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio"
+                                                               asp-for="@Model.InsuredObject.Gender"
+                                                               id="Gender-@item"
+                                                               value="@item"
+                                                               readonly
+                                                               class="form-check-input" />
+                                                        <label for="Gender-@item"
+                                                               class="form-check-label text-capitalize me-1">@item</label>
+                                                    </div>
+                                                }
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Marital Status
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @foreach (var item in (MaritalStatus[])Enum.GetValues(typeof(MaritalStatus)))
+                                                {
+                                                    <div class="form-check form-check-inline">
+                                                        <input type="radio"
+                                                               asp-for="@Model.InsuredObject.MaritalStatus"
+                                                               id="MaritalStatus-@item"
+                                                               value="@item"
+                                                               readonly
+                                                               class="form-check-input" />
+                                                        <label for="MaritalStatus-@item"
+                                                               class="form-check-label text-capitalize me-1">@item</label>
+                                                    </div>
+                                                }
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Citizen identification number (ID)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.PID
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                ID issue Date
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.PidIssueDate.ToString("dd MMMM yyyy")
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                ID issue Place
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.PidIssuePlace
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Email
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.Email
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Phone
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.Phone
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Address
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.InsuredObject.Address
+                                            </dd>
+                                        </dl>
+                                    </section>
+                                    <!-- Insured Object End -->
+                                    <!-- Appraisal Infos Start -->
+                                    <section class="row mt-4">
+                                        <div class="text-uppercase h5 border-bottom border-primary text-primary">
+                                            III. Appraisal Information
+                                        </div>
+                                        <table class="table mt-2">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>
+                                                        No.
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.AppraisalInfos.AppraisalInfos[0].Description)
+                                                    </th>
+                                                    <th style="width: 22.5%">
+                                                        @Html.DisplayNameFor(model => model.AppraisalInfos.AppraisalInfos[0].Answer)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (var i = 0; i < Model.AppraisalInfos.AppraisalInfos.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td class="align-baseline">
+                                                            @(i + 1)
+                                                        </td>
+                                                        <td class="align-baseline">
+                                                            @Model.AppraisalInfos.AppraisalInfos[@i].Description
+                                                            <input asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].Description" value="@Model.AppraisalInfos.AppraisalInfos[@i].Description" hidden>
+                                                            @if (Model.AppraisalInfos.AppraisalInfos[@i].DescriptionType.Equals(DescriptionType.yesNo))
+                                                            {
+                                                                <div class="mt-2">
+                                                                    @Model.AppraisalInfos.AppraisalInfos[@i].DescriptionDetail
+                                                                    <input asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].DescriptionDetail" value="@Model.AppraisalInfos.AppraisalInfos[@i].DescriptionDetail" hidden>
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <textarea asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].DetailAnswer"
+                                                                                  class="form-control"
+                                                                                  rows="2"
+                                                                                  readonly
+                                                                                  rules="requiredIf:AppraisalInfos[@i].Answer,yes"></textarea>
+                                                                        <span asp-validation-for="@Model.AppraisalInfos.AppraisalInfos[@i].DetailAnswer" class="text-danger form-message"></span>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                        <td class="align-baseline">
+                                                            <input asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].DescriptionType" value="@Model.AppraisalInfos.AppraisalInfos[@i].DescriptionType" hidden>
+                                                            @if (Model.AppraisalInfos.AppraisalInfos[@i].DescriptionType.Equals(DescriptionType.yesNo))
+                                                            {
+                                                                <div class="form-group">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input type="radio"
+                                                                               asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].Answer"
+                                                                               id="AppraisalInfos[@i].Answer_yes"
+                                                                               value="yes"
+                                                                               class="form-check-input"
+                                                                               readonly
+                                                                               rules="required" />
+                                                                        <label for="AppraisalInfos[@i].Answer_yes"
+                                                                               class="form-check-label text-capitalize me-1">Yes</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input type="radio"
+                                                                               asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].Answer"
+                                                                               id="AppraisalInfos[@i].Answer_no"
+                                                                               value="no"
+                                                                               class="form-check-input"
+                                                                               readonly
+                                                                               rules="required" />
+                                                                        <label for="AppraisalInfos[@i].Answer_no"
+                                                                               class="form-check-label text-capitalize">No</label>
+                                                                    </div>
+                                                                    <br />
+                                                                    <span asp-validation-for="@Model.AppraisalInfos.AppraisalInfos[@i].Answer" class="text-danger form-message"></span>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="form-group">
+
+                                                                    <input type="text"
+                                                                           asp-for="@Model.AppraisalInfos.AppraisalInfos[@i].Answer"
+                                                                           class="form-control form-control-sm"
+                                                                           readonly
+                                                                           rules="required" />
+                                                                    <span asp-validation-for="@Model.AppraisalInfos.AppraisalInfos[@i].Answer" class="text-danger form-message"></span>
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </section>
+                                    <!-- Appraisal Infos End -->
+                                    <!-- Appraisal Dossiers Start -->
+                                    <section class="row mt-4">
+                                        <div class="text-uppercase h5 border-bottom border-primary text-primary">
+                                            IV. Attachments
+                                        </div>
+                                        <dl class="row">
+                                            <dt class="col-sm-3">
+                                                Citizen Identification
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <a href="/@Model.AppraisalDossier.Identification" target="_blank" rel="noopener noreferrer">
+                                                    @Html.GetFileName(Model.AppraisalDossier.Identification)
+                                                </a>
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Health Certification
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <a href="/@Model.AppraisalDossier.HealthCertification" target="_blank" rel="noopener noreferrer">
+                                                    @Html.GetFileName(Model.AppraisalDossier.HealthCertification)
+                                                </a>
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Other File (if any)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                <a href="/@Model.AppraisalDossier.Other" target="_blank" rel="noopener noreferrer">
+                                                    @Html.GetFileName(Model.AppraisalDossier.Other)
+                                                </a>
+                                            </dd>
+
+                                            <dt class="col-sm-3">
+                                                Other File Description (if any)
+                                            </dt>
+                                            <dd class="col-sm-9">
+                                                @Model.AppraisalDossier.OtherDescription
+                                            </dd>
+                                        </dl>
+                                    </section>
+                                    <!-- Appraisal Dossiers End -->
+                                    <!-- General Terms Start-->
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="accordion" id="accordionGeneralTerms">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseOne"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapseOne"
+                                                            style="padding: 0.75rem 1rem;">
+                                                        General Terms
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionGeneralTerms">
+                                                    <div class="accordion-body">
+                                                        @await Html.PartialAsync("/Views/LifeInsurance/_GeneralTerms.cshtml")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- General Terms End-->
+
+                                <div class="col-md-10">
+                                    <section class="row mt-5">
+                                        <div class="form-group">
+                                            <a class="btn btn-outline-primary px-3"
+                                               href="javascript:goBack('/LifeInsurance/@Model.Package?.Slug/PackageRegister-Dossiers-View', 'POST')">
+                                                Back
+                                            </a>
+                                            <button type="button" class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#packageRegisterModal">
+                                                Register package
+                                            </button>
+                                            @* <input type="submit" value="Register package" class="btn btn-primary px-3" /> *@
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="packageRegisterModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Register Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                By clicking <b>"Understood, and proceed"</b>, we understand that you are completely aware of your benefits as well as corresponding responsibilities in terms of the registered insurance package.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">Understood, and proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Service End -->
+@section JS {
+    <script src="/js/KienJs/validator.js"></script>
+    <script>
+        function goBack(url, method = "GET") {
+            $.ajax({
+                url: url,
+                type: method,
+                dataType: "html",
+                success: function (res) {
+                    try {
+                        let newDoc = document.open("text/html", "replace");
+                        newDoc.write(res);
+                        newDoc.close();
+                        const form = new Validator('#createAppraisalDossiers');
+                    } catch (e) {
+                        console.log(e);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Status: ", status);
+                    console.log("Error: ", error);
+                }
+            })
+        }
+        function submitForm(){
+            $("#packageOverview").submit();
+        }
+        $(':radio:not(:checked)').attr('disabled', true);
+    </script>
+}

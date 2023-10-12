@@ -1,0 +1,68 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    var package = ViewBag.Package as test0000001.Models.Policy;
+}
+
+<section class="row mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    No.
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments![0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments![0].Amount) (USD)
+                </th>
+                <th class="text-primary">
+                    @Html.DisplayNameFor(model => model.Payments![0].DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Payments![0].Status)
+                </th>
+                <th>Payment Voucher</th>
+                <th>Payment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.Payments!.Count; i++)
+            {
+                var currentStatus = Html.CurrentPaymentStatus(
+                Model.Payments![i].DueDate,
+                Model.Payments![i].Status
+                );
+                <tr>
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Payments![i].Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Payments![i].Amount)
+                    </td>
+                    <td class="text-primary">
+                        @Model.Payments![i].DueDate.ToString("dd MMMM yyyy")
+                    </td>
+                    <td>
+                        <span class="badge @Html.PaymentStatusCss(currentStatus)">
+                            @currentStatus
+                        </span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Payments![i].PaymentId)
+                    </td>
+                    <td>
+                        @Model.Payments![i].PaymentDate
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

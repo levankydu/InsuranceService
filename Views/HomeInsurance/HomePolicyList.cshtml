@@ -1,0 +1,70 @@
+﻿@model IEnumerable<test0000001.Models.Policy>
+
+@{
+    ViewData["Title"] = "List Policy";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>List Home Policy</h3>
+                <p class="text-subtitle text-muted">
+                    All Home Policy Profile is here
+                </p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb"
+                     class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Display" asp-controller="Admin">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            List Home Policy
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic Tables start -->
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Home Policy</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="table1">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Premium</th>
+                                <th>Duration (month)</th>
+                                <th>Total Period</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.Premium.ToString("C")</td>
+                                    <td>@item.Duration!.Term</td>
+                                    <td>@item.Duration.TotalPeriod</td>
+                                    <td>
+                                        <span class="badge bg-@(item.IsActive ? "success" : "danger")">@(item.IsActive ? "Active" : "Unworking")</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic Tables end -->
+</div>

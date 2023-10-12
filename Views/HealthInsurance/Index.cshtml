@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Health Insurance";
+}
+
+<style>
+    div.wrapper {
+        transform: translateX(7%);
+    }
+
+    label {
+        width: 100%;
+    }
+
+    .gender-check {
+        display: none;
+    }
+
+    .card-input-gender-element {
+        display: none;
+    }
+
+    .card-input {
+        margin: 10px;
+        padding: 00px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transition: 1s;
+    }
+
+        .card-input:hover {
+            cursor: pointer;
+        }
+
+    .card-input-gender-element:checked + .card-input {
+        box-shadow: 0 0 1px 1px green;
+        transition: 1s;
+    }
+</style>
+
+<div class="wrapper container row my-5">
+    <div class="col-6">
+        <h3 class="text-center">About Health Insurance</h3>
+        <div>
+            <p>Health insurance is a critical financial tool that provides individuals and families with peace of mind when it comes to their healthcare needs. In essence, it is a contractual agreement between an individual and an insurance company, wherein the insurer agrees to cover a portion or all of the insured person's medical expenses in exchange for regular premium payments. This coverage extends to a wide range of healthcare services, including doctor visits, hospital stays, prescription medications, and preventive care.</p>
+            <p>Health insurance plays a pivotal role in ensuring that people have access to necessary medical services without the burden of exorbitant out-of-pocket expenses. It serves as a safety net, safeguarding individuals and families from the potentially crippling costs associated with unexpected illnesses or injuries. Additionally, health insurance often offers various plans and options tailored to different needs, allowing individuals to choose the level of coverage that suits their circumstances and budget.</p>
+            <p>Overall, health insurance is a fundamental aspect of modern life, promoting not only individual well-being but also contributing to the overall stability of healthcare systems. It is a vital tool for managing and mitigating healthcare costs, allowing people to focus on their health and well-being without the constant worry of financial hardship in times of medical need.</p>
+        </div>
+    </div>
+    <div class="col-6">
+        <h3 class="text-center">Who are you going to buy health insurance for?</h3>
+        @if (User.IsInRole("admin"))
+        {
+            <div class="card text-center border border-danger shadow">
+                <div class="card-header">
+                    <i class="fa-solid fa-circle-exclamation fa-beat fa-lg text-danger"></i>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-danger">Admin is not allowed to access and use these features.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <form asp-action="Create" asp-controller="HealthInsurance" method="get">
+                <label class="w-100">
+                    <input type="radio" name="purpose" value="self" onchange="return form.submit()" class="card-input-gender-element" required />
+                    <div class="card card-input px-0">
+                        <div class="card-body row fs-5">
+                            <div class="col-12 text-center">
+                                Yourself
+                            </div>
+                        </div>
+                    </div>
+                </label>
+                <label class="w-100">
+                    <input type="radio" name="purpose" value="other" onchange="return form.submit()" class="card-input-gender-element" required />
+                    <div class="card card-input px-0">
+                        <div class="card-body row fs-5">
+                            <div class="col-12 text-center">
+                                Other People
+                            </div>
+                        </div>
+                    </div>
+                </label>
+            </form>
+        }
+    </div>
+</div>
+
+<script>
+
+</script>
+

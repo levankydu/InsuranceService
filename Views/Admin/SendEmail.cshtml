@@ -1,0 +1,58 @@
+﻿@model test0000001.Models.DTO.SendEmail
+
+
+@{
+    ViewData["Title"] = "Reply Message";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<div class="container w-75">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Send Email</h4>
+            <h5 class="text-success">@ViewBag.status</h5>
+            @if(ViewBag.status != null)
+            {
+                <a asp-action="ListContactMessage" asp-controller="Admin" >
+                    <span class="badge bg-success">
+                        <h5>Back To List</h5>
+                    </span>
+                </a>
+               
+            }
+        </div>
+        @if (ViewBag.status == null)
+        {
+            <div class="card-content">
+                <div class="card-body">
+                    <form asp-action="SendEmail" asp-controller="Admin" method="post">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label asp-for="Email">Email To:</label>
+                                        <input asp-for="Email" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label asp-for="ContentSend">Content</label>
+                                        <textarea asp-for="ContentSend" type="text" class="form-control" rows="5"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1" onclick="return confirm('Send ?');">Send</button>
+                                    <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    
+    </div>
+</div>
+

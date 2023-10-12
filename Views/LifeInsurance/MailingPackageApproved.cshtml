@@ -1,0 +1,120 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    ViewData["Title"] = "Package Registration";
+    Layout = "/Views/LifeInsurance/_EmailLayout.cshtml";
+    string personTitle = Model.InsuredObject.Gender switch
+    {
+        Gender.Male => "Mr.",
+        Gender.Female => "Mrs.",
+        _ => "Mr. / Mrs."
+    };
+}
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="ffffff" class="bg_color">
+
+    <tr>
+        <td align="center">
+            <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
+
+                <tr>
+                    <td align="center" style="color: #343434; font-size: 24px; font-family: Quicksand, Calibri, sans-serif; font-weight:700;letter-spacing: 3px; line-height: 35px;"
+                        class="main-header">
+                        <!-- section text ======-->
+
+                        <div style="line-height: 35px">
+                            Package of <br />
+                            <span style="color: #5caad2;">@Model.Package?.Name</span> <br />
+                            has been approved
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="center">
+                        <table border="0" width="40" align="center" cellpadding="0" cellspacing="0" bgcolor="eeeeee">
+                            <tr>
+                                <td height="2" style="font-size: 2px; line-height: 2px;">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td height="20" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="left">
+                        <table border="0" width="759" align="center" cellpadding="0" cellspacing="0" class="container590">
+                            <tr>
+                                <td align="left" style="color: #888888; font-size: 16px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
+                                    <!-- section text ======-->
+
+                                    <p style="line-height: 24px; margin-bottom:15px;">
+                                        Dear @personTitle @Model.InsuredObject.Name,
+                                    </p>
+                                    <p style="line-height: 24px;margin-bottom:15px;">
+
+                                        Congratulations, your registered package has been approved. We hope that you are not waiting so long for hearing that. At the moment, you can visit our website to proceed the policy payment.
+                                        The official contract of the package is as attached for your reference. In terms of privacy, please keep it in private and confidential.
+                                        <br/>
+                                        <br />
+                                        The password for accessing the contract: <span style="color: #DC143C; font-weight:bold;">@ViewBag.PdfPassword</span>
+                                        <br />
+                                        <br />
+                                        In the mean time, in case of any inquires occurred, please feel free to contact us.
+                                        <br />
+                                        <br />
+                                    </p>
+                                    <p style="line-height: 24px; margin-bottom:20px;">
+                                        You can access your account at any point using the link below for your very first payment.
+                                    </p>
+                                    <table border="0" align="center" width="180" cellpadding="0" cellspacing="0" bgcolor="5caad2" style="margin-bottom:20px;">
+
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="center" style="color: #ffffff; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 22px; letter-spacing: 2px;">
+                                                <!-- main section button -->
+
+                                                <div style="line-height: 22px;">
+                                                    <a href="" style="color: #ffffff; text-decoration: none;">MY ACCOUNT</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
+                                        </tr>
+
+                                    </table>
+                                    <p style="line-height: 24px">
+                                        Love,<br />
+                                        Insurance Service
+                                    </p>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
+    </tr>
+
+</table>
+

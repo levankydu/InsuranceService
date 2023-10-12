@@ -1,0 +1,97 @@
+﻿@model IEnumerable<test0000001.Models.Duration>
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Duration Management";
+}
+
+<div class="page-heading">
+    <h3>Duration Management</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PriceAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Term)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPeriod)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @item.PriceAmount.ToString("C")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Term)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPeriod)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </a>
+                            @* <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-info-circle me-1"></i> Details
+                            </a> *@
+                            <a href="javascript:deleteItem('@item.Id')" class="btn btn-sm btn-outline-danger me-1">
+                                <i class="bi bi-trash me-1"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+</div>
+
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog"></div>
+
+@section Scripts
+    {
+    <script>
+        function deleteItem(id) {
+            $.ajax({
+                url: "/Admin/Duration/Delete/" + id,
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    try {
+                        $('#deleteModal').html(data);
+                        $('#deleteModal').modal('show');
+                    } catch (e) {
+                        let newDoc = document.open("text/html", "replace");
+                        newDoc.write(data);
+                        newDoc.close();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Status: ", status);
+                    console.log("Error: ", error);
+                }
+            })
+        }
+    </script>
+}  

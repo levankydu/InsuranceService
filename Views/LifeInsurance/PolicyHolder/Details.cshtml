@@ -1,0 +1,73 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    ViewData["Title"] = "Subscription Detail";
+}
+
+@section Css {
+    <style>
+        a.disabled {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        section:first-of-type {
+            margin-top: 10px !important;
+        }
+
+        .card .card-header {
+            background-color: #f2f7ff;
+        }
+
+        .card .card-body {
+            border-radius: 0 0 calc(0.7rem - 1px) calc(0.7rem - 1px);
+        }
+
+        .bg-warning {
+            color: #212529 !important;
+        }
+    </style>
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn"
+     data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-4 animated slideInDown mb-4">Policies Subscription</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/lifeInsuranceHolder">Subscriptions</a></li>
+                <li class="breadcrumb-item active" aria-current="/LifeInsuranceHolder/Details/@Model.PolicyHolder.Id">Detail Subscription</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Service Start -->
+<div class="container-xxl py-4">
+    <div class="container">
+        <div class="text-center mx-auto" style="max-width: 800px">
+            <h1 class="display-6 mb-5 lh-base">
+                The details of your registered package 
+                <br />
+                <span class="text-primary text-uppercase">@Model.Package?.Name</span>
+            </h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="page-details-body">
+                @await Html.PartialAsync("/Views/LifeInsurance/PolicyHolder/_DetailsBody.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+@section JS {
+    <script>
+        $(':radio:not(:checked)').attr('disabled', true);
+
+    </script>
+    }

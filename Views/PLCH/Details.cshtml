@@ -1,0 +1,233 @@
+﻿@model test0000001.Models.Policyholder
+
+@{
+	ViewData["Title"] = "Details";
+	Layout = "AdminLayout/_Layout";
+}
+
+<div class="page-title">
+	<div class="row">
+		<div class="col-12 col-md-6 order-md-1 order-last">
+			<h3>List Policy Holder</h3>
+			<p class="text-subtitle text-muted">
+				Policy Holder ID: @Model.Id
+			</p>
+		</div>
+		<div class="col-12 col-md-6 order-md-2 order-first">
+			<nav aria-label="breadcrumb"
+				 class="breadcrumb-header float-start float-lg-end">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">
+						<a asp-action="Display" asp-controller="Admin">Dashboard</a>
+					</li>
+					<li class="breadcrumb-item" aria-current="page">
+						List Policy Holder
+					</li>
+					<li class="breadcrumb-item active" aria-current="page">
+						Policy Holder Details
+					</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
+</div>
+
+
+<h3 class="text-danger">@ViewBag.MsgError</h3>
+<h3 class="text-success">@ViewBag.MsgSuccess</h3>
+
+<div class="container">
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Policy)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Policy!.Name)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.User)
+		</dt>
+		<dd class="col-sm-10">
+			@(Model.User!.FirstName + " " + Model.User.LastName)
+		</dd>
+		@if (Model.Object != null)
+		{
+			<dt class="col-sm-2 my-4">
+				@Html.DisplayNameFor(model => model.Object)
+			</dt>
+			<dd class="col-sm-10 mt-4">
+				<table class="table table-striped">
+					@foreach (var item in Policyholder.ConvertObject(Model.Object!))
+					{
+						if (item.Key.Contains("Photo"))
+						{
+							<tr>
+								<th>@item.Key</th>
+								<td>
+									<img src="@Url.Content("~/" + item.Value)" width="500" height="300" />
+								</td>
+							</tr>
+						}
+						else
+						{
+							<tr>
+								<th>@(item.Key)</th>
+								<td>@item.Value</td>
+							</tr>
+						}
+					}
+				</table>
+			</dd>
+		}
+		@if (Model.Question != null)
+		{
+			<dt class="col-sm-2 my-4">
+				@Html.DisplayNameFor(model => model.Question)
+			</dt>
+			<dd class="col-sm-10 my-4">
+				<table class="table table-striped">
+					@foreach (var item in Policyholder.ConvertObject(Model.Question!))
+					{
+						<tr>
+							<td>
+								<p class="fw-bold">@(item.Key)?</p>
+								<p>@item.Value</p>
+							</td>
+						</tr>
+					}
+				</table>
+			</dd>
+		}
+
+		@if (Model.CarInsuredObject != null)
+		{
+			<dt class="col-sm-2 my-4">
+				@Html.DisplayNameFor(model => model.Object)
+			</dt>
+			<dd class="col-sm-10 mt-4">
+				<table class="table table-striped">
+					<tr>
+						<th>Years of manufacture</th>
+						<td> @Model.CarInsuredObject.YearsOfManufacture</td>
+					</tr>
+					<tr>
+						<th>Automaker</th>
+						<td> @Model.CarInsuredObject.Automaker</td>
+					</tr>
+					<tr>
+						<th>Motor brand</th>
+						<td> @Model.CarInsuredObject.CarBand</td>
+					</tr>
+					<tr>
+						<th>Engine Number</th>
+						<td> @Model.CarInsuredObject.EngineNumber</td>
+					</tr>
+					<tr>
+						<th>Frame Number</th>
+						<td> @Model.CarInsuredObject.FrameNumber</td>
+					</tr>
+					<tr>
+						<th>License Plate Number</th>
+						<td> @Model.CarInsuredObject.LicensePlateNumber</td>
+					</tr>
+					<tr>
+						<th>Engine Displacement</th>
+						<td> @Model.CarInsuredObject.EngineDisplacement</td>
+					</tr>
+					<tr>
+						<th>Color </th>
+						<td> @Model.CarInsuredObject.Color</td>
+					</tr>
+					<tr>
+						<th>Register in city</th>
+						<td> @Model.CarInsuredObject.CityOfCarReg</td>
+					</tr>
+					<tr>
+						<th>Front VIN</th>					
+						<td>
+							<img src="@Url.Content("~/MotorInsurance/IdImages/" +  @Model.CarInsuredObject.FrontImg)" width="500" height="300" />
+						</td>
+					</tr>
+					<tr>
+						<th>Back VIN</th>
+						<td>
+							<img src="@Url.Content("~/MotorInsurance/IdImages/" +  @Model.CarInsuredObject.BackImg)" width="500" height="300" />
+						</td>
+					</tr>
+
+				</table>
+			</dd>					
+
+		}
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.StartDay)
+		</dt>
+		<dd class="col-sm-10">
+			@((Model.Status == "Pending" || Model.Payments!.Count() <= 0) ? "--/--/--" : Model.StartDay.ToString("dd/MM/yyyy").Replace('/', '-'))
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.EndDay)
+		</dt>
+		<dd class="col-sm-10">
+			@((Model.Status == "Pending" || Model.Payments!.Count() <= 0) ? "--/--/--" : Model.EndDay.ToString("dd/MM/yyyy").Replace('/', '-'))
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Status)
+		</dt>
+		<dd class="col-sm-10">
+			<h2><span class="badge badge-lg rounded-pill bg-@Model.StatusColor()">@Model.Status</span></h2>
+		</dd>
+	</dl>
+</div>
+<div class="m-3">
+	<form id="action-form" asp-action="ConfirmOrReject" asp-controller="PLCH" method="post">
+		<input type="hidden" name="id" value="@Model.Id" />
+		<input id="type-submit" type="hidden" name="type" />
+		@if (Model.Status == "Pending")
+		{
+			<button id="approve-button" type="submit" class="btn btn-outline-success float-end">Approve</button>
+		}
+		@if (Model.Status == "Pending" || Model.Status == "Waiting For Payment")
+		{
+			<button id="reject-button" type="submit" class="btn btn-outline-danger float-end">Reject</button>
+		}
+	</form>
+</div>
+<a asp-action="Index">Back to List</a>
+
+<script>
+	document.querySelector("#reject-button").addEventListener("click", function (e) {
+		e.preventDefault();
+		swal({
+			title: "Are you sure to reject?",
+			text: "Once submitted, you will not be able to reverse this action!",
+			icon: "info",
+			buttons: true,
+			dangerMode: true
+		})
+			.then((isAccept) => {
+				if (isAccept) {
+					document.querySelector("#type-submit").value = "Reject";
+					document.querySelector("#action-form").submit();
+				}
+			});
+	});
+	document.querySelector("#approve-button").addEventListener("click", function (e) {
+		e.preventDefault();
+		swal({
+			title: "Are you sure to approve?",
+			text: "Once submitted, you will not be able to reverse this action!",
+			icon: "info",
+			buttons: true,
+		})
+			.then((isAccept) => {
+				if (isAccept) {
+					document.querySelector("#type-submit").value = "Approve";
+					document.querySelector("#action-form").submit();
+				}
+			});
+	});
+</script>

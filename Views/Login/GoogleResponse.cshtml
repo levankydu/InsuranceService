@@ -1,0 +1,80 @@
+﻿@model string
+
+@section Css{
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="~/Profile/site.css" rel="stylesheet" />
+	<style>
+
+		.navbar.sticky-top {
+			top: 0px !important;
+		}
+	</style>
+
+}
+
+@{
+	ViewData["Title"] = "Google Login";
+
+}
+
+
+<div class="container-fluid p-0">
+	<!-- Header -->
+	<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://img.freepik.com/premium-vector/young-man-solving-problem-remembering-password_258190-1046.jpg?w=740); background-size: cover; background-position: center top;">
+		<!-- Mask -->
+		<span class="mask bg-gradient-default opacity-8"></span>
+		<!-- Header container -->
+		<div class="container-fluid d-flex align-items-center">
+			<div class="row">
+				<div class="col-lg-7 col-md-10">
+					<h1 class="display-2 text-white">Hello  </h1>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page content -->
+	<div class="container-fluid mt--7">
+		<div class="row" style="justify-content:center!important;">
+			<div class="col-xl-8 order-xl-1">
+				<div class="card bg-secondary shadow">
+					<div class="card-header bg-white border-0">
+						<div class="row align-items-center">
+							<div class="col-12">
+								<h3 class="mb-0">Notice</h3>
+								<h3 class="mb-0 text-success"> @(ViewBag.status as string)</h3>
+
+							</div>
+
+						</div>
+						
+					</div>
+					<div class="card-body">
+						@if(ViewBag.count == "1")
+						{
+
+							<a class="btn btn-info" asp-action="LoginNoPassword" asp-controller="Login" asp-route-email="@ViewBag.email">Go to website</a>
+							@* <form asp-action="LoginNoPassword" asp-controller="Login">
+								<input type="hidden" value="@ViewBag.name" name="email" />
+								<input type="submit" class="btn btn-info" value="Go to website">
+							</form> *@
+							
+						}
+						@if(ViewBag.count == "2")
+						{
+							<a class="btn btn-info" asp-action="LoginNoPassword" asp-controller="Login" asp-route-email="@ViewBag.email">Go to website</a>
+							@* <form asp-action="LoginNoPassword" asp-controller="Login">
+								<input type="hidden" value="@ViewBag.name" name="email" />
+								<input type="submit" class="btn btn-info" value="Go to website">
+							</form> *@
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

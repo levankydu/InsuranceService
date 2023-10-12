@@ -1,0 +1,253 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Life Insurance Policy Holder Details";
+    bool isPackageActivated = Model.PolicyHolder.Status!.Equals("Activated");
+}
+
+@section Css {
+    <style>
+        a.disabled {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        section:first-of-type {
+            margin-top: 10px !important;
+        }
+
+        .card .card-header {
+            background-color: #f2f7ff;
+        }
+
+        .card .card-body {
+            border-radius: 0 0 calc(0.7rem - 1px) calc(0.7rem - 1px);
+        }
+
+        .bg-warning {
+            color: #212529 !important;
+        }
+    </style>
+}
+
+<div class="page-heading">
+    <h3>Life Insurance Policy Holder Details</h3>
+</div>
+
+<div class="page-content">
+    <p>
+        <a asp-action="Index" class="btn btn-sm btn-primary">
+            Go Back
+        </a>
+    </p>
+
+    @await Html.PartialAsync("/Views/LifeInsurance/PolicyHolder/_DetailsBody.cshtml")
+
+    <div class="mt-2">
+        <a class="btn btn-success me-1 @(Model.PolicyHolder.Status == "Pending" ? "" : "disabled")"
+           data-bs-toggle="modal"
+           data-bs-target="#packageActionModal"
+           data-bs-whatever="Approve">
+            <i class="bi bi-check-circle-fill"></i> Approve
+        </a>
+
+        <a class="btn btn-danger me-1 @(Model.PolicyHolder.Status == "Pending" ? "" : "disabled")"
+           data-bs-toggle="modal"
+           data-bs-target="#packageActionModal"
+           data-bs-whatever="Reject">
+            <i class="bi bi-x-circle-fill"></i> Reject
+        </a>
+
+        <a class="btn btn-warning text-dark me-1 @(Model.PolicyHolder.Status == "Activated" ? "" : "disabled")"
+           data-bs-toggle="modal"
+           data-bs-target="#packageActionModal"
+           data-bs-whatever="Terminate">
+            <i class="bi bi-exclamation-circle-fill"></i> Terminate
+        </a>
+    </div>
+</div>
+
+
+<!-- Main Modal -->
+<div class="modal fade" id="packageActionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Policy Approval</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-body-title">Are you sure you want to approve this policy?</p>
+                <div class="my-4">
+                    <dl class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Package!.Name)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Package!.Name)
+                        </dd>
+
+                        <dt class="col-sm-3">
+                            User
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Model.User.FirstName @Model.User.LastName
+                        </dd>
+
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Package!.Premium)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Package!.Premium)
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="modal-submit-btn" class="btn btn-primary">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="packageRejectModal" aria-hidden="true" aria-labelledby="packageRejectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="packageRejectModal-title">Package Rejection</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Reject" id="Reject">
+                    <div>
+                        <input type="hidden" name="id" value="@Model.PolicyHolder.Id" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label" for="reason">Please write down the reason why this package is being rejected</label>
+                        <textarea name="reason" class="form-control" rows="4" rules="required"></textarea>
+                        <span class="text-danger form-message"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-danger" onclick="submitRejectForm()">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terminate Modal -->
+<div class="modal fade" id="packageTerminateModal" aria-hidden="true" aria-labelledby="packageTerminateModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="packageTerminateModal-title">Package Termination</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Terminate" id="Terminate">
+                    <div>
+                        <input type="hidden" name="id" value="@Model.PolicyHolder.Id" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label" for="reason">Please write down the reason why this package is being terminated</label>
+                        <textarea name="reason" class="form-control" rows="4" rules="required"></textarea>
+                        <span class="text-danger form-message"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-danger" onclick="submitTerminateForm()">Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-action="Approve" id="Approve">
+    <input type="hidden" name="id" value="@Model.PolicyHolder.Id" />
+</form>
+
+@section Scripts {
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/js/KienJs/validator.js"></script>
+    <script>
+        $(':radio:not(:checked)').attr('disabled', true);
+
+        var modal = document.getElementById('packageActionModal');
+        modal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var recipient = button.getAttribute('data-bs-whatever');
+
+            var titles = {
+                Approve: "Package Approval",
+                Reject: "Package Rejection",
+                Terminate: "Package Termination"
+            }
+            var bodyTitles = {
+                Approve: "Are you sure you want to Approve this policy?",
+                Reject: "Are you sure you want to Reject this policy?",
+                Terminate: "Are you sure you want to Terminate this policy?"
+            }
+
+            // Update the modal's content.
+            var modalTitle = modal.querySelector('.modal-title');
+            modalTitle.textContent = titles[recipient];
+            var modalBodyTitle = modal.querySelector('.modal-body-title');
+            modalBodyTitle.textContent = bodyTitles[recipient];
+
+            var submitBtn = modal.querySelector('#modal-submit-btn');
+            switch (recipient) {
+                case "Approve":
+                    submitBtn.removeAttribute("data-bs-target");
+                    submitBtn.removeAttribute("data-bs-toggle");
+                    submitBtn.removeAttribute("data-bs-dismiss");
+                    submitBtn.classList.add("btn-primary");
+                    submitBtn.classList.remove("btn-danger", "btn-warning");
+                    submitBtn.removeEventListener('click', submitRejectForm);
+                    submitBtn.removeEventListener('click', submitTerminateForm);
+                    submitBtn.addEventListener('click', submitApproveForm);
+                    break;
+                case "Reject":
+                    submitBtn.setAttribute("data-bs-target", "#packageRejectModal");
+                    submitBtn.setAttribute("data-bs-toggle", "modal");
+                    submitBtn.setAttribute("data-bs-dismiss", "modal");
+                    submitBtn.classList.add("btn-danger");
+                    submitBtn.classList.remove("btn-primary", "btn-warning");
+                    submitBtn.removeEventListener('click', submitApproveForm);
+                    submitBtn.removeEventListener('click', submitTerminateForm);
+                    const formReject = new Validator("form#Reject");
+                    break;
+                case "Terminate":
+                    submitBtn.setAttribute("data-bs-target", "#packageTerminateModal");
+                    submitBtn.setAttribute("data-bs-toggle", "modal");
+                    submitBtn.setAttribute("data-bs-dismiss", "modal");
+                    submitBtn.classList.add("btn-warning");
+                    submitBtn.classList.remove("btn-danger", "btn-primary");
+                    submitBtn.removeEventListener('click', submitApproveForm);
+                    submitBtn.removeEventListener('click', submitRejectForm);
+                    const formTerminate = new Validator("form#Terminate");
+                default:
+                    break;
+            }
+
+        });
+
+        const submitApproveForm = () => $("form#Approve").submit();
+        const submitRejectForm = () => $("form#Reject").submit();
+        const submitTerminateForm = () => $("form#Terminate").submit();
+
+    </script>
+    }
