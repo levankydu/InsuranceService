@@ -1,0 +1,106 @@
+﻿@model test0000001.Models.Policy
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<div class="container w-75" >
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">CreateHealthPolicy</h4>
+            <h5 class="text-danger">@ViewBag.MsgError</h5>
+            <h5 class="text-success">@ViewBag.MsgSuccess</h5>
+        </div>
+        <div class="card-content">
+            <div class="card-body">
+                <form asp-action="CreateHealthPolicy" asp-controller="HealthInsurance" method="post">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="first-name-vertical">Name</label>
+                                    <input  asp-for="Name" type="text" id="first-name-vertical" class="form-control"  placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="email-id-vertical">Min Premium</label>
+                                    <input type="number" id="minPremium" class="form-control" value="0">
+                                </div>
+                            </div> 
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="email-id-vertical">Max Premium</label>
+                                    <input type="number" id="maxPremium" class="form-control" value="0">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="email-id-vertical"></label>
+                                    <button id="durationCheck" class="form-control btn btn-outline-primary">Check Available Duration</button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <span class="text-danger" id="priceFilterValidation"></span>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="contact-info-vertical">Term</label>
+                                    <select asp-for="DurationId" id="term" class="form-control" placeholder="Mobile"></select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="password-vertical">Description</label>
+                                    <textarea asp-for="Description" type="text" class="form-control"  placeholder="Description"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
+
+    document.querySelector("#durationCheck").addEventListener("click", premiumSubmit);
+    function premiumSubmit(e) {
+        e.preventDefault();
+        $.ajax({
+            url: "/HealthInsurance/GetDurationList",
+            type: "get",
+            data: { 
+                minPrice: $("#minPremium").val(),
+                maxPrice: $("#maxPremium").val(),               
+            },
+            success: function (res) {
+                if ("error" in res) {
+                    $("#priceFilterValidation").text(res.error);
+                }else{
+                    $("#priceFilterValidation").text("");
+                    $("#term").html('<option value ="">--Select Term--</option>');
+                    $.each(res.list, function (key, value) {
+                        $("#term").append('<option value="' + value
+                            .id + '">' + `Term Duration: ${value.term} (in month) - Total Periods: ${value.totalPeriod} (time/term) - Premium: ${formatter.format(value.priceAmount)}` + '</option>');
+                    });
+                }
+            }
+        });
+    };
+</script>
+
+

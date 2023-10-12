@@ -1,0 +1,46 @@
+﻿@model test0000001.Models.Question
+
+@{
+    ViewData["Title"] = "QuestionCreate";
+    Layout = "AdminLayout/_Layout";
+}
+
+<div class="container w-75">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Create HealthPolicy Question</h4>
+            <h5 class="text-danger">@ViewBag.MsgError</h5>
+            <h5 class="text-success">@ViewBag.MsgSuccess</h5>
+        </div>
+        <div class="card-content">
+            <div class="card-body">
+                <form asp-action="QuestionCreate" asp-controller="HealthInsurance" method="post">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Content" class="control-label"></label>
+                                    <input asp-for="Content" class="form-control" />
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

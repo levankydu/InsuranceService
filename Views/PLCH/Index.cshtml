@@ -1,0 +1,83 @@
+﻿@model IEnumerable<test0000001.Models.Policyholder>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "AdminLayout/_Layout";
+}
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>List Policy Holder</h3>
+                <p class="text-subtitle text-muted">
+                    All Policy Holder is here
+                </p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb"
+                     class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Display" asp-controller="Admin">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            List Policy Holder
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic Tables start -->
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Health Policy</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="table1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    User Name
+                                </th>
+                                <th>
+                                    Policy Name
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartDay)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndDay)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(item.User!.FirstName + " " + item.User!.LastName)</td>
+                                    <td>@(item.Policy!.Name)</td>
+                                    <td> 
+                                        <span class="badge bg-@item.StatusColor()">@item.Status</span>
+                                        </td>
+                                    <td>@((item.Status == "Pending" || item.Payments!.Count() <= 0) ? "--/--/--" : item.StartDay.ToString("yyyy/MM/dd").Replace('/', '-'))</td>
+                                    <td>@((item.Status == "Pending" || item.Payments!.Count() <= 0) ? "--/--/--" : item.EndDay.ToString("yyyy/MM/dd").Replace('/', '-'))</td>
+                                    <td>
+                                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic Tables end -->
+</div>

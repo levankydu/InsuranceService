@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "OurServices Page";
+    string username = User.Identity!.Name!;
+
+}
+<!-- Service Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto" style="max-width: 500px">
+            <h1 class="display-6 mb-5">
+                We Provide professional Insurance Services
+            </h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex align-items-center ms-n5 mb-4">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            <img class="img-fluid"
+                                 src="~/HomeLibrary/img/icon/icon-10-light.png"
+                                 alt="" />
+                        </div>
+                        <h4 class="mb-0">Life Insurance</h4>
+                    </div>
+                    <p class="mb-4">
+                        Life insurance is not only a way for you to protect your future but also a gift you leave for your loved ones in the future.
+                    </p>
+                    <a class="btn btn-light px-3" href="/lifeInsurance">Read More</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex align-items-center ms-n5 mb-4">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            <img class="img-fluid"
+                                 src="~/HomeLibrary/img/icon/icon-01-light.png"
+                                 alt="" />
+                        </div>
+                        <h4 class="mb-0">Health Insurance</h4>
+                    </div>
+                    <p class="mb-4">
+                        "Healthy Choices, Brighter Tomorrows with Health Insurance."
+                    </p>
+                    <a asp-action="Index" asp-controller="HealthInsurance" class="btn btn-light px-3">Read More</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex align-items-center ms-n5 mb-4">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            <img class="img-fluid"
+                                 src="~/HomeLibrary/img/icon/icon-05-light.png"
+                                 alt="" />
+                        </div>
+                        <h4 class="mb-0">Home Insurance</h4>
+                    </div>
+                    <p class="mb-4">
+                        Protects the house and assets inside the house but does not include: Money, checks, letters of guarantee... against risks such as fire, explosion...
+                    </p>
+                    <a asp-action="Introduce" asp-controller="HomeInsurance" class="btn btn-light px-3">Read More</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex ms-n5 mb-4">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            <img class="img-fluid"
+                                 src="~/HomeLibrary/img/icon/icon-08-light.png"
+                                 alt="" />
+                        </div>
+                        <h4 class="mb-0">Motor Insurance</h4>
+                    </div>
+                    <p class="mb-4">
+                        "Protection on the Road: Your Motor Insurance Companion."
+                    </p>
+                    <a asp-action="IntroduceMotorInsurance" asp-controller="MotorInsurance" class="btn btn-light px-3">Read More</a>
+                </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+<!-- Service End -->

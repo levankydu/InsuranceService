@@ -1,0 +1,194 @@
+﻿@model IEnumerable<test0000001.Models.Policy>
+
+@{
+    ViewData["Title"] = "MotorPolicyList";
+    Layout = "AdminLayout/_Layout";
+}
+
+@*<h1>Motor Policy List</h1>
+
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+
+
+    <div class="body-wrapper">
+
+
+        <!-- Change this content if you need to modify -->
+        <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="card w-100">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold mb-4">Policy </h5>
+                    <a class="btn btn-info" asp-action="CreateMotorPolicy" asp-controller="MotorInsurance">Create new Policy</a>
+                    <div>
+
+                        @if (!string.IsNullOrEmpty(TempData["msg"] as string))
+                        {
+                            <div class="alert alert-success">
+                                @TempData["msg"]
+                            </div>
+                        }
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr class="text-center">
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Id)</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.DurationId)</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Name)</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Premium)</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Description)</h6>
+                                    </th>
+
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Action</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="text-center">
+                                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">@Html.DisplayFor(modelItem => item.Id)</h6></td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.DurationId)</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.Name)</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.Premium)</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.Description)</h6>
+                                        </td>
+
+
+                                        <td class="border-bottom-0">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <a class="btn btn-warning" asp-route-id="@item.Id" asp-action="EditMotorPolicy" asp-controller="MotorInsurance">
+                                                    Edit
+                                                </a>
+                                                <form asp-action="DeleteMotorPolicy" asp-controller="MotorInsurance">
+                                                    <input type="hidden" name="id" value="@item.Id">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End change -->
+
+    </div>
+</div>*@
+
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>List All Motor Policy</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb"
+                     class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a asp-action="Display" asp-controller="Admin">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            List All Motor Policy
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic Tables start -->
+    <section class="section">
+        <div class="card">
+            <div class="card-header">Motor Policy</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="table1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    >@Html.DisplayNameFor(model => model.Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DurationId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Premium)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td >@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td  >
+                                    @Html.DisplayFor(modelItem => item.DurationId)
+                                    </td>
+                                    <td  >
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td  >
+                                        @Html.DisplayFor(modelItem => item.Premium)
+                                    </td>
+                                    <td  >
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+
+
+                                    <td class="border-bottom-0">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a class="btn btn-warning" asp-route-id="@item.Id" asp-action="EditMotorPolicy" asp-controller="MotorInsurance">
+                                                Edit
+                                            </a>
+                                            <form asp-action="DeleteMotorPolicy" asp-controller="MotorInsurance">
+                                                <input type="hidden" name="id" value="@item.Id">
+                                                <button type="submit" class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Basic Tables end -->
+</div>

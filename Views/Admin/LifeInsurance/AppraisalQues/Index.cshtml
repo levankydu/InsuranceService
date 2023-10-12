@@ -1,0 +1,131 @@
+﻿@using test0000001.Models.LifeInsurance
+@model IEnumerable<AppraisalQues>
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Appraisal Question Management";
+}
+
+@section Css {
+    <link rel="stylesheet" href="/AdminLibrary/assets/vendors/simple-datatables/style.css">
+
+    <style>
+        table .desc-col-width {
+            width: 40% !important;
+        }
+    </style>
+}
+
+<div class="page-heading">
+    <h3>Appraisal Question Management</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <p>
+            <a asp-action="Index" asp-controller="LifeInsurance" class="btn btn-sm btn-primary me-2">
+                Go Back
+            </a>
+            <a asp-action="Create" class="btn btn-sm btn-outline-primary">
+                Create New
+            </a>
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover table-striped" id="appraisalQuesManagement">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            @* <th scope="col">
+                                @Html.DisplayNameFor(model => model.InsuranceCategoryId)
+                            </th> *@
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.DescriptionType)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th scope="col">
+                                @Html.DisplayNameFor(model => model.DescriptionDetail)
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row" class="align-top">
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                @* <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.InsuranceCategoryId)
+                                </td> *@
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.DescriptionType)
+                                </td>
+                                <td class="desc-col-width align-top">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td class="align-top">
+                                    @Html.DisplayFor(modelItem => item.DescriptionDetail)
+                                </td>
+                                <td class="align-top">
+                                    <div class="d-flex justify-content-center align-items-start">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1 mb-1">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="javascript:deleteItem('@item.Id')" class="btn btn-sm btn-outline-danger mb-1">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog"></div>
+
+@section Scripts
+    {
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/AdminLibrary/assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        const table = document.querySelector("#appraisalQuesManagement");
+        const dataTable = new simpleDatatables.DataTable(table);
+    </script>
+
+    <script>
+        function deleteItem(id) {
+            $.ajax({
+                url: "/Admin/AppraisalQues/Delete/" + id,
+                type: "GET",
+                dataType: "html",
+                success: function (data) {
+                    try {
+                        $('#deleteModal').html(data);
+                        $('#deleteModal').modal('show');
+                    } catch (e) {
+                        let newDoc = document.open("text/html", "replace");
+                        newDoc.write(data);
+                        newDoc.close();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Status: ", status);
+                    console.log("Error: ", error);
+                }
+            })
+        }
+    </script>
+}  

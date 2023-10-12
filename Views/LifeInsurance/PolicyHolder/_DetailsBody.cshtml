@@ -1,0 +1,121 @@
+﻿@using test0000001.Extensions;
+@using test0000001.Helpers;
+@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.PackageOverviewDto
+
+@{
+    bool isPackageActivated = Model.PolicyHolder.Status!.Equals("Activated");
+    bool isPackageTerminated = Model.PolicyHolder.Status!.Equals("Terminated");
+    bool isAdminPage = ViewBag.IsAdminPage;
+    var dueCount = Model.Payments?.Count(
+            m => m.DueDate.IsDue() && !m.Status.Equals(PaymentStatus.Paid));
+}
+
+
+<div class="card">
+    <div class="card-header border-top border-start border-end">
+        <h5 class="card-title">
+            @Model.Package?.Name?.ToUpper() -
+            @Model.InsuredObject.Name?.ToUpper()
+            (@Model.InsuredObject.DateOfBirth.GetCurrentAge() years old)
+        </h5>
+        <div>
+            <span class="fw-bold text-primary">Status: </span>
+            <span class="badge @Html.PolicyStatusCss(Model.PolicyHolder.Status)">@Model.PolicyHolder.Status</span>
+        </div>
+        @{
+            var contractNo = Model.InsuredObject.AppraisalManifestId.ToString();
+            var contractDate = Model.PolicyHolder.ApprovedAt.ToString("dd MMMM yyyy");
+            if (isPackageActivated || isPackageTerminated)
+            {
+                <div>
+                    <span class="fw-bold text-primary">Contract No. : </span>
+                    <span class="fw-bold">@contractNo</span>
+                </div>
+                <div>
+                    <span class="fw-bold text-primary">Contract Date: </span>
+                    <span class="fw-bold">@contractDate</span>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="card-body border-bottom border-start border-end">
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="manifest-tab" data-bs-toggle="tab" href="#manifest"
+                   role="tab" aria-controls="manifest" aria-selected="true">Manifest</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="dossiers-tab" data-bs-toggle="tab" href="#dossiers"
+                   role="tab" aria-controls="dossiers" aria-selected="false">Dossiers</a>
+            </li>
+
+            @if (isPackageActivated || isPackageTerminated)
+            {
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link position-relative" id="paymentSchedule-tab" data-bs-toggle="tab" href="#paymentSchedule"
+                       role="tab" aria-controls="paymentSchedule" aria-selected="true">
+                        Payment Schedule
+                        @if (dueCount > 0 && isPackageActivated)
+                        {
+                            <span class="position-absolute top-0 badge rounded-pill bg-danger">@dueCount</span>
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="manifest" role="tabpanel"
+                 aria-labelledby="manifest-tab">
+                @await Html.PartialAsync("/Views/LifeInsurance/_PackageGeneralInfo.cshtml")
+            </div>
+
+            <div class="tab-pane fade" id="dossiers" role="tabpanel"
+                 aria-labelledby="dossiers-tab">
+                <dl class="row">
+                    <dt class="col-sm-4">Citizen Identification</dt>
+                    <dd class="col-sm-8">
+                        <a href="/@Model.AppraisalDossier.Identification" target="_blank" rel="noopener noreferrer">
+                            @Html.GetFileName(Model.AppraisalDossier.Identification)
+                        </a>
+                    </dd>
+                    <dt class="col-sm-4">Health Certification</dt>
+                    <dd class="col-sm-8">
+                        <a href="/@Model.AppraisalDossier.HealthCertification" target="_blank" rel="noopener noreferrer">
+                            @Html.GetFileName(Model.AppraisalDossier.HealthCertification)
+                        </a>
+                    </dd>
+                    <dt class="col-sm-4">Other File (if any)</dt>
+                    <dd class="col-sm-8">
+                        <a href="/@Model.AppraisalDossier.Other" target="_blank" rel="noopener noreferrer">
+                            @Html.GetFileName(Model.AppraisalDossier.Other)
+                        </a>
+                    </dd>
+                    <dt class="col-sm-4">Other File Description (if any)</dt>
+                    <dd class="col-sm-8">
+                        @Model.AppraisalDossier.OtherDescription
+                    </dd>
+                </dl>
+            </div>
+
+            @if (isPackageActivated || isPackageTerminated)
+            {
+                <div class="tab-pane fade" id="paymentSchedule" role="tabpanel"
+                     aria-labelledby="paymentSchedule-tab">
+                    @if (isAdminPage)
+                    {
+                        @await Html.PartialAsync("/Views/LifeInsurance/PolicyHolder/_PaymentScheduleAdmin.cshtml")
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("/Views/LifeInsurance/PolicyHolder/_PaymentSchedule.cshtml")
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

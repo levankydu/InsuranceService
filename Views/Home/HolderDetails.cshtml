@@ -1,0 +1,299 @@
+﻿@model test0000001.Models.Policyholder
+
+@{
+    ViewData["Title"] = "HolderDetails";
+    Payment lastPaid = Model.LastestPayment()!;
+    string GetCateShortName(string input)
+    {
+        string[] words = input.Split(' ');
+        string output = string.Join("", words.Select(w => w[0] + w[1]));
+        return output;
+    }
+}
+
+@section Css{
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="~/Profile/site.css" rel="stylesheet" />
+    <style>
+
+        .navbar.sticky-top {
+            top: 0px !important;
+        }
+
+        fieldset {
+            padding: 10px;
+            position: relative;
+        }
+
+        legend {
+            position: absolute;
+            top: -20px;
+            background-color: #ffffff;
+            padding: 0 10px;
+            white-space: nowrap;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 30%;
+        }
+
+        .bg-custom-blue {
+            background-color: #0C0095;
+        }
+    </style>
+
+}
+
+<div class="container-fluid p-0">
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80); background-size: cover; background-position: center top;">
+        <!-- Mask -->
+        <span class="mask bg-gradient-default opacity-8"></span>
+        <!-- Header container -->
+        <div class="container-fluid d-flex align-items-center">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="m-5">
+                        <a asp-action="PolicyHolder" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+</div>
+
+<div class="container card p-5 shadow-lg" style="top: -80px">
+    <div class="row">
+        <h1 class="col-8">Policy Contract ID: <span class="fw-bold">#@(GetCateShortName(Model.Policy!.InsuranceCategory!.Name!))-CTGRY-@Model.Id</span> </h1>
+        <div class="col-4">
+            <h2 class="float-end"><span class="badge badge-lg rounded-pill bg-@Model.StatusColor()">@Model.Status</span></h2>
+        </div>
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Type
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Policy!.InsuranceCategory!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Policy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Policy!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.User!.FirstName + " " + Model.User.LastName)
+        </dd>
+        @if (Model.Object != null)
+        {
+            <dt class="col-sm-2 my-4">
+                @Html.DisplayNameFor(model => model.Object)
+            </dt>
+            <dd class="col-sm-10 mt-4">
+                <table class="table table-striped">
+                    @foreach (var item in Policyholder.ConvertObject(Model.Object!))
+                    {
+                        if (item.Key.Contains("Photo"))
+                        {
+                            <tr>
+                                <th>@item.Key</th>
+                                <td>
+                                    <img src="@Url.Content("~/" + item.Value)" width="500" height="300" />
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th>@(item.Key)</th>
+                                <td>@item.Value</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </dd>
+        }
+        @if (Model.Question != null)
+        {
+            <dt class="col-sm-2 my-4">
+                @Html.DisplayNameFor(model => model.Question)
+            </dt>
+            <dd class="col-sm-10 my-4">
+                <table class="table table-striped">
+                    @foreach (var item in Policyholder.ConvertObject(Model.Question!))
+                    {
+                        <tr>
+                            <td>
+                                <p class="fw-bold">@(item.Key)?</p>
+                                <p>@item.Value</p>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </dd>
+        }
+
+        @if (Model.CarInsuredObject != null)
+        {
+            <dt class="col-sm-2 my-4">
+                @Html.DisplayNameFor(model => model.Object)
+            </dt>
+            <dd class="col-sm-10 mt-4">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Years of manufacture</th>
+                        <td> @Model.CarInsuredObject.YearsOfManufacture</td>
+                    </tr>
+                    <tr>
+                        <th>Automaker</th>
+                        <td> @Model.CarInsuredObject.Automaker</td>
+                    </tr>
+                    <tr>
+                        <th>Motor brand</th>
+                        <td> @Model.CarInsuredObject.CarBand</td>
+                    </tr>
+                    <tr>
+                        <th>Engine Number</th>
+                        <td> @Model.CarInsuredObject.EngineNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Frame Number</th>
+                        <td> @Model.CarInsuredObject.FrameNumber</td>
+                    </tr>
+                    <tr>
+                        <th>License Plate Number</th>
+                        <td> @Model.CarInsuredObject.LicensePlateNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Engine Displacement</th>
+                        <td> @Model.CarInsuredObject.EngineDisplacement</td>
+                    </tr>
+                    <tr>
+                        <th>Color </th>
+                        <td> @Model.CarInsuredObject.Color</td>
+                    </tr>
+                    <tr>
+                        <th>Register in city</th>
+                        <td> @Model.CarInsuredObject.CityOfCarReg</td>
+                    </tr>
+                    <tr>
+                        <th>Front VIN</th>
+                        <td>
+                            <img src="@Url.Content("~/MotorInsurance/IdImages/" +  @Model.CarInsuredObject.FrontImg)" width="500" height="300" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Back VIN</th>
+                        <td>
+                            <img src="@Url.Content("~/MotorInsurance/IdImages/" +  @Model.CarInsuredObject.BackImg)" width="500" height="300" />
+                        </td>
+                    </tr>
+
+                </table>
+            </dd>
+
+        }
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDay)
+        </dt>
+        <dd class="col-sm-10">
+            @((Model.Status == "Pending" || Model.Payments!.Count() <= 0) ? "--/--/--" : Model.StartDay.ToString("dd/MM/yyyy").Replace('/', '-'))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDay)
+        </dt>
+        <dd class="col-sm-10">
+            @((Model.Status == "Pending" || Model.Payments!.Count() <= 0) ? "--/--/--" : Model.EndDay.ToString("dd/MM/yyyy").Replace('/', '-'))
+        </dd>
+    </dl>
+
+    @if (Model.Status == "Waiting For Payment")
+    {
+        <div class="card shadow-lg border border-3 border-warning bg-light">
+            <h5 class="card-header fs-3 bg-light"><span class="float-start">Required Payment</span><span class="float-end">Peroid: @(Model.LastestPayment() == null ? "First Payment" : (Model.Policy!.Duration!.TotalPeriod == Model.LastestPayment()!.PaymentPeriod + 1 ? "Last Period" : (Model.LastestPayment()!.PaymentPeriod + 1)))</span></h5>
+            <div class="card-body">
+                <p class="card-text text-center fs-4 fw-bold">Amount: @Model.EachPeriodPrice().ToString("C")</p>
+                <p class="card-text text-center text-warning fw-bold">*Paypal will charge 2% of the amount for fee.</p>
+                <p class="card-text text-center text-warning fw-bold">*If no payment is received after 3 days since required payment was shown, your policy holder will be rejected forever.</p>
+                <form asp-action="PaymentWithPaypal" asp-controller="Home" method="post" class="text-center">
+                    <input type="hidden" name="holderId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-lg border border-2 border-primary"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="Check out with PayPal" /></button>
+                </form>
+            </div>
+        </div>
+    }
+
+    @if (Model.Payments!.Count() > 0)
+    {
+        <fieldset class="border border-5 rounded shadow-sm bg-light pt-4 pb-3 mt-5">
+            <legend class="border border-2 rounded shadow bg-custom-blue text-light fs-3">Paid Payments</legend>
+            @foreach (var item in Model.Payments!)
+            {
+                <div class="card shadow-lg text-center border border-3 border-success m-5">
+                    <div class="card-header fs-3">
+                        Period: @item.PaymentPeriod <span class="float-end text-success"><i class="fa-solid fa-circle-check"></i></span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fs-4">Paid At: @item.CreatedAt.ToString("dd/MM/yyyy").Replace('/', '-') - Method: @item.Method</h5>
+                        <p class="card-text fs-3 fw-bold">@item.Amount.ToString("C")</p>
+                    </div>
+                </div>
+            }
+        </fieldset>
+    }
+
+    @if (Model.Status != "Pending" && Model.Status != "Rejected")
+    {
+        <fieldset class="border border-3 rounded shadow-sm bg-light pt-4 pb-3 mt-5">
+            <legend class="border border-2 rounded shadow bg-custom-blue text-light fs-3">Next Payment Periods</legend>
+            @if (lastPaid != null)
+            {
+                for (int i = 0; i < Model.Policy!.Duration!.TotalPeriod - Model.Payments!.Count(); i++)
+                {
+                    <div class="card shadow-lg text-center m-5">
+                        <div class="card-header fs-3">
+                            Period: @(i + 1 + Model.Payments!.Count()) <span class="float-end text-secondary"><i class="fa-solid fa-clock"></i></span>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title">This payment is started at: <span class="badge badge-lg rounded-pill bg-primary">@Model.StartDay.AddMonths(Model.MonthPerPeriod() * (Model.Payments!.Count() + i)).ToString("dd/MM/yyyy").Replace('/', '-')</span></h1>
+                            <p class="card-text fs-3 fw-bold">@Model.EachPeriodPrice().ToString("C")</p>
+                        </div>
+                    </div>
+                }
+            }
+
+            @if (lastPaid != null && lastPaid!.PaymentPeriod == Model.Policy!.Duration!.TotalPeriod)
+            {
+                <p class="text-center fs-3 fw-bold text-success">All payments are paid, thank you for choosing our service.</p>
+            }
+
+            @if (lastPaid == null)
+            {
+                <p class="text-center fs-3 fw-bold text-danger">*First payment is required to display all your period's payments.</p>
+            }
+        </fieldset>
+    }
+    else
+    {
+        <fieldset class="border border-3 rounded shadow-sm bg-light pt-4 pb-3 mt-5">
+            <legend class="border border-2 rounded shadow bg-custom-blue text-light fs-3">Notification</legend>
+            @if (Model.Status == "Pending")
+            {
+                <p class="text-center fs-3 fw-bold text-danger">*Your policy contract is being checked by manager team, please patiently wait, this process could take about 1 to 3 days for correcting your information.</p>
+            }
+            @if (Model.Status == "Rejected")
+            {
+                <p class="text-center fs-3 fw-bold text-danger">*Your policy contract was cancelled, contact us for more information if you need to, thank you for choosing us.</p>
+            }
+        </fieldset>
+    }
+
+</div>

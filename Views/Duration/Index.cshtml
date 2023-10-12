@@ -1,0 +1,87 @@
+﻿@model IEnumerable<test0000001.Models.Duration>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+
+
+    <div class="body-wrapper">
+
+
+        <!-- Change this content if you need to modify -->
+        <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="card w-100">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold mb-4">Insurance Category</h5>
+                    <a class="btn btn-info" asp-action="Create" asp-controller="Duration">Create new Duration</a>
+                    <div>
+
+                        @if (!string.IsNullOrEmpty(TempData["msg"] as string))
+                        {
+                            <div class="alert alert-success">
+                                @TempData["msg"]
+                            </div>
+                        }
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr class="text-center">
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Id)</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.PriceAmount)</h6>
+                                    </th>                                  
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">@Html.DisplayNameFor(model => model.Term)</h6>
+                                    </th>
+
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Action</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="text-center">
+                                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0">@Html.DisplayFor(modelItem => item.Id)</h6></td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.PriceAmount)</h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">@Html.DisplayFor(modelItem => item.Term)</h6>
+                                        </td>
+
+                                        <td class="border-bottom-0">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <a class="btn btn-warning" asp-route-id="@item.Id" asp-action="Edit" asp-controller="Duration">
+                                                    Edit
+                                                </a>
+                                                <form asp-action="Delete" asp-controller="Duration">
+                                                    <input type="hidden" name="id" value="@item.Id">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End change -->
+
+    </div>
+</div>

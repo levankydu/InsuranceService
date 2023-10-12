@@ -1,0 +1,81 @@
+﻿@using test0000001.Models.LifeInsurance
+@using test0000001.Extensions
+@model AppraisalQues
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Create Appraisal Question";
+}
+
+<div class="page-heading">
+    <h3>@(Model == null ? "Create" : "Update") Appraisal Question</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <div class="mb-4">
+            <a asp-action="Index" class="btn btn-sm btn-primary">Go Back</a>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="row">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form asp-action="@(Model == null ? "Create" : "Edit")">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                @{
+                                    if (Model != null)
+                                    {
+                                        <input type="hidden" asp-for="Id" />
+                                        <input type="hidden" asp-for="InsuranceCategoryId" />
+                                    }
+                                }
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DescriptionType" class="control-label"></label>
+                                    <br />
+                                    @foreach (var item in (DescriptionType[])Enum.GetValues(typeof(DescriptionType)))
+                                    {
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio"
+                                                   asp-for="DescriptionType"
+                                                   id="DescriptionType-@item"
+                                                   value="@item"
+                                                   class="form-check-input" />
+                                            <label for="DescriptionType-@item"
+                                                   class="form-check-label text-capitalize me-2">@item.GetDisplayName()</label>
+                                        </div>
+                                    }
+                                    <br />
+                                    <span asp-validation-for="DescriptionType" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DescriptionDetail" class="control-label"></label>
+                                    <textarea asp-for="DescriptionDetail" class="form-control" rows="3" placeholder="Not required"></textarea>
+                                    <span asp-validation-for="DescriptionDetail" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-actions d-flex justify-content-end mt-4">
+                                    <input type="submit" value="@(Model == null ? "Create" : "Update")" class="btn btn-primary me-1" />
+                                    <button type="reset" class="btn btn-light-primary" id="resetBtn">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+}

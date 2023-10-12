@@ -1,0 +1,82 @@
+﻿@model test0000001.Models.Duration
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Create Duration";
+}
+
+<div class="page-heading">
+    <h3>@(Model == null ? "Create" : "Update") Duration</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <div class="mb-4">
+            <a asp-action="Index">Back to List</a>
+        </div>
+        <div class="col-md-4">
+            <form asp-action="@(Model == null ? "Create" : "Edit")" onsubmit="return checkValidate()">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @{
+                    if (Model != null)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+                }
+                <div class="form-group">
+                    <label asp-for="PriceAmount" class="control-label"></label>
+                    <input id="priceAmount" type="number" asp-for="PriceAmount" class="form-control" />
+                    <span asp-validation-for="PriceAmount" class="text-danger"></span>
+                </div>
+                <div id="ppDevideWarn" class="form-group text-danger d-none">Total Period must be devisible by Price Amount</div>
+                <div class="form-group">
+                    <label asp-for="Term" class="control-label"></label>
+                    <input id="term" type="number" asp-for="Term" class="form-control" />
+                    <span asp-validation-for="Term" class="text-danger"></span>
+                </div>
+                <div id="tpDevideWarn" class="form-group text-danger d-none">Total Period must be devisible by Term</div>
+                <div class="form-group">
+                    <label asp-for="TotalPeriod" class="control-label"></label>
+                    <input id="totalPeriod" type="number" asp-for="TotalPeriod" class="form-control" />
+                    <span asp-validation-for="TotalPeriod" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@(Model == null ? "Create" : "Update")" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<script>
+    let tpDevideWarn = document.getElementById("tpDevideWarn");
+    let ppDevideWarn = document.getElementById("ppDevideWarn");
+    function checkValidate(){
+        console.log(1);
+        let totalPeriod = document.getElementById("totalPeriod").value;
+        let term = document.getElementById("term").value;
+        let priceAmount = document.getElementById("priceAmount").value;
+
+        let a = term % totalPeriod;
+        if(a != 0){
+            tpDevideWarn.classList.remove("d-none");
+            tpDevideWarn.classList.add("d-block");
+            return false;
+        }
+
+        let b = priceAmount % totalPeriod;
+        if(b != 0){
+            ppDevideWarn.classList.remove("d-none");
+            ppDevideWarn.classList.add("d-block");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

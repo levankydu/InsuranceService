@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "AdminLayout/_Layout";
+}
+
+
+<script src="~/AdminLibrary/assets/static/js/initTheme.js"></script>
+
+<div class="page-content">
+    <section class="">
+        <div class="row mt-3">
+            <h1 class="col-12 text-center">Welcome to Admin Dashboard</h1>
+        </div>
+        <div class="row">
+            <div class="row col-12">
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                    <div class="stats-icon purple mb-2">
+                                        <i class="iconly-boldShow"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold">
+                                        Total Policy
+                                    </h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.TotalPolicy</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                    <div class="stats-icon blue mb-2">
+                                        <i class="iconly-boldProfile"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold">Total User</h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.TotalUser</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                    <div class="stats-icon green mb-2">
+                                        <i class="iconly-boldAdd-User"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold" style="white-space: nowrap;">Pending Holders</h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.PendingHolders</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                                    <div class="stats-icon red mb-2">
+                                        <i class="iconly-boldBookmark"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold" style="white-space: nowrap;">Unread Message</h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.UnreadMsg</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <!-- Basic Tables start -->
+            <div class="card container px-5">
+                <div class="card-header display-6 fw-bold">
+                    Payments<span class="float-end text-success">
+                        Total: @(ViewBag.TotalAmount != null ? ViewBag.TotalAmount.ToString("C") : "$0.00")
+                    </span>
+                </div>
+                <form class="row" asp-action="Display" method="get">
+                    @if (ViewBag.Status != null)
+                    {
+                        <div class="text-danger">@ViewBag.Status</div>
+                    }
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Start Day</label>
+                            <input type="date" name="startDay" class="form-control" value="@DateTime.MinValue.ToString("yyyy/MM/dd").Replace('/', '-')">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>End Day</label>
+                            <input type="date" name="endDay" class="form-control" value="@DateTime.Now.ToString("yyyy/MM/dd").Replace('/', '-')">
+                        </div>
+                    </div>
+                  @*   <div class="col-6"></div> *@
+                    <div class="col-6 w-50">
+                        <div class="form-group">
+                            <label for="email-id-vertical"></label>
+                            <button class="form-control btn btn-outline-primary" style="width:fit-content;align-content:center;">Check</button>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </form>
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="table1">
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Payments != null && ViewBag.TotalAmount != null)
+                                {
+                                    @foreach (var item in ViewBag.Payments)
+                                    {
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.Policyholder.User.FirstName @item.Policyholder.User.LastName</td>
+                                            <td>@item.Amount.ToString("C")</td>
+                                            <td>@item.Method</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Basic Tables end -->
+        </section>
+    </section>
+
+</div>
+
+

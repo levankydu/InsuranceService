@@ -1,0 +1,124 @@
+﻿@using test0000001.Models.LifeInsurance
+@model test0000001.Models.DTO.LifeInsurance.AppraisalInfosDto
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Appraisal Info Management";
+}
+
+<div class="page-heading">
+    <h3>Appraisal Info Management</h3>
+</div>
+
+<form asp-action="Create" id="createAppraisalInfo">
+    <div class="page-content">
+        <section class="row">
+            <p>
+                <a asp-action="Index">Back to List</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            No.
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AppraisalInfos[0].Description)
+                        </th>
+                        <th style="width: 22.5%">
+                            @Html.DisplayNameFor(model => model.AppraisalInfos[0].Answer)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.AppraisalInfos.Count; i++)
+                    {
+                        <tr>
+                            <td class="align-baseline">
+                                @(i + 1)
+                            </td>
+                            <td class="align-baseline">
+                                @Model.AppraisalInfos[@i].Description
+                                <input asp-for="@Model.AppraisalInfos[@i].Description" value="@Model.AppraisalInfos[@i].Description" hidden>
+                                @if (Model.AppraisalInfos[@i].DescriptionType.Equals(DescriptionType.yesNo))
+                                {
+                                    <div class="mt-2">
+                                        @Model.AppraisalInfos[@i].DescriptionDetail
+                                        <input asp-for="@Model.AppraisalInfos[@i].DescriptionDetail" value="@Model.AppraisalInfos[@i].DescriptionDetail" hidden>
+                                        <br />
+                                        <div class="form-group">
+                                            <textarea asp-for="@Model.AppraisalInfos[@i].DetailAnswer"
+                                                      class="form-control"
+                                                      rows="2"
+                                                      rules="requiredIf:AppraisalInfos[@i].Answer,yes"></textarea>
+                                            <span asp-validation-for="@Model.AppraisalInfos[@i].DetailAnswer" class="text-danger form-message"></span>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                            <td class="align-baseline">
+                                <input asp-for="@Model.AppraisalInfos[@i].DescriptionType" value="@Model.AppraisalInfos[@i].DescriptionType" hidden>
+                                @if (Model.AppraisalInfos[@i].DescriptionType.Equals(DescriptionType.yesNo))
+                                {
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio"
+                                                   asp-for="@Model.AppraisalInfos[@i].Answer"
+                                                   id="AppraisalInfos[@i].Answer_yes"
+                                                   value="yes"
+                                                   class="form-check-input"
+                                                   rules="required" />
+                                            <label for="AppraisalInfos[@i].Answer_yes"
+                                                   class="form-check-label text-capitalize me-1">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio"
+                                                   asp-for="@Model.AppraisalInfos[@i].Answer"
+                                                   id="AppraisalInfos[@i].Answer_no"
+                                                   value="no"
+                                                   class="form-check-input"
+                                                   rules="required" />
+                                            <label for="AppraisalInfos[@i].Answer_no"
+                                                   class="form-check-label text-capitalize">No</label>
+                                        </div>
+                                        <br />
+                                        <span asp-validation-for="@Model.AppraisalInfos[@i].Answer" class="text-danger form-message"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+
+                                        <input type="text"
+                                               asp-for="@Model.AppraisalInfos[@i].Answer"
+                                               class="form-control form-control-sm"
+                                               rules="required" />
+                                        <span asp-validation-for="@Model.AppraisalInfos[@i].Answer" class="text-danger form-message"></span>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </section>
+    </div>
+
+</form>
+
+
+@section Scripts {
+    <script type="module">
+        import { Validator } from '/js/KienJs/validator.js';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                // Input validation
+                const form = new Validator('#createAppraisalInfo');
+            }
+        });
+    </script>
+}

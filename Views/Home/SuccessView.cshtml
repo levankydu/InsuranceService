@@ -1,0 +1,66 @@
+﻿
+
+@model string
+
+@section Css{
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+	<link href="~/Profile/site.css" rel="stylesheet" />
+	<style>
+
+		.navbar.sticky-top {
+			top: 0px !important;
+		}
+	</style>
+
+}
+
+@{
+	ViewData["Title"] = "Payment Success";
+
+}
+
+
+<div class="container-fluid p-0">
+	<!-- Header -->
+	<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://www.soroptimistindianrock.org/wp-content/uploads/2021/01/PAYMENT-SUCCESS.png); background-size: cover; background-position: center top;">
+		<!-- Mask -->
+		<span class="mask bg-gradient-default opacity-8"></span>
+		<!-- Header container -->
+		<div class="container-fluid d-flex align-items-center">
+			<div class="row">
+				<div class="col-lg-7 col-md-10">
+					<h1 class="display-2 text-white">Thank you for choosing Us </h1>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page content -->
+	<div class="container-fluid mt--7">
+		<div class="row" style="justify-content:center!important;">
+			<div class="col-xl-8 order-xl-1">
+				<div class="card bg-secondary shadow">
+					<div class="card-header bg-white border-0">
+						<div class="row align-items-center">
+							<div class="col-8">
+								<h3 class="mb-0">PAYMENT SUCCESSFULL</h3>
+								
+							</div>
+
+						</div>
+					</div>
+					<div class="card-body">
+						
+						<div class="col-6 text-center">
+							<a asp-action="Profile" asp-controller="Home" class="btn btn-sm btn-primary" onMouseOver="this.style.color='#0F0'">Back To My Profile</a>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

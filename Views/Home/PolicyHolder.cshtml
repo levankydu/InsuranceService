@@ -1,0 +1,88 @@
+﻿@model List<test0000001.Models.Policyholder>
+
+@{
+    ViewData["Title"] = "User's Policy";
+}
+
+
+
+<div class="container-fluid p-0">
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 350px; background-image: url(https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80); background-size: cover; background-position: center top;">
+        <!-- Mask -->
+        <span class="mask bg-gradient-default opacity-8"></span>
+        <!-- Header container -->
+        <div class="container-fluid d-flex align-items-center">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="m-5">
+                        <a asp-action="Profile" class="btn btn-secondary">Back to profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+</div>
+
+<div class="container card bg-light shadow-lg p-5" style="top: -80px">
+    <h1 class="text-center pb-5">Information of Policyholder</h1>
+    @if(User.Identity!.Name == "admin")
+    {
+    <h4 class="text-center pb-5">"@ViewBag.status"</h4>
+        
+    }
+    @if (Model!.Count() > 0)
+    {
+        @foreach (var holder in Model!)
+        {
+            <div class="card shadow my-3 mx-5">
+                <h5 class="card-header d-flex justify-content-between">
+                    <span class="">@holder.Policy!.InsuranceCategory!.Name </span>
+                    <span class="">@holder.Policy.Name</span>
+                    <span class="">Start: @((holder.Status == "Pending" || holder.Payments!.Count() <= 0) ? "--/--/--" : holder.StartDay.ToString("yyyy/MM/dd").Replace('/', '-')) - End: @((holder.Status == "Pending" || holder.Payments!.Count() <= 0) ? "--/--/--" : holder.EndDay.ToString("yyyy/MM/dd").Replace('/', '-'))</span>
+                </h5>
+                <div class="card-body row">
+                    <div class="col-11">
+                        <div class="container row mx-3">
+                            @if(holder.Object != null)
+                            {                
+                                Dictionary<string, string> holders = Policyholder.ConvertObject(holder.Object!);
+                                holders.Remove("Id Photo Front");
+                                holders.Remove("Id Photo Back");
+
+                                @foreach (var item in holders)
+                                {
+                                    <div class="col-6">@item.Key: @item.Value</div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex flex-column">
+                        @{
+                            if (!holder.Policy!.InsuranceCategory!.Id.Equals(1))
+                            {
+                                <a asp-action="HolderDetails" asp-route-id="@holder.Id" class="btn btn-outline-primary"><i class="fa-solid fa-info"></i></a>
+                            }
+                            else
+                            {
+                                <a href="/LifeInsuranceHolder/Details/@holder.Id" class="btn btn-outline-primary"><i class="fa-solid fa-info"></i></a>
+                            }
+                        }
+                        
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <p class="w-50 text-center text-light bg-@holder.StatusColor() border border-@holder.StatusColor() rounded mx-5">@holder.Status</p>
+                </div>
+            </div>
+        }
+    }
+    else if (User.Identity.Name != "admin")
+    {
+        <div style="text-align:center;">
+            <h5>No Policy</h5>
+            <a asp-action="OurService" asp-controller="Home" class="btn btn-success" style="background-color:#15233C!important;"> Let 's take around our Service</a>
+        </div>
+    }
+</div>

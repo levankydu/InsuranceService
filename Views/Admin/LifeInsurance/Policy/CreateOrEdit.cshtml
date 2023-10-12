@@ -1,0 +1,335 @@
+﻿@model test0000001.Models.Policy
+
+@{
+    Layout = "AdminLayout/_Layout";
+    ViewData["Title"] = "Create Life Insurance";
+    var recentPolicies = ViewBag.RecentPolicies as IEnumerable<Policy> ??
+        new List<Policy>();
+}
+
+@section Css {
+    <link rel="stylesheet" href="/AdminLibrary/assets/vendors/summernote/summernote-lite.min.css">
+
+    <style>
+        .myFilesUpload .list-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0px 20px;
+            margin-top: 10px;
+        }
+
+        .myFilesUpload .hidden {
+            display: none;
+        }
+
+        .myFilesUpload .control-group {
+            justify-content: flex-start;
+            /* display: flex;
+                                                                                                                                                                                                                            margin-bottom: 10px; */
+        }
+
+        .myFilesUpload .input-group {
+            width: auto;
+        }
+
+        .myFilesUpload .input-group-btn {
+            display: flex;
+            width: 100%;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+            .myFilesUpload .input-group-btn .btn-add-image {
+                width: 100%;
+                font-size: 0.8rem;
+                /*padding: 8px 12px; */
+            }
+
+        .myFilesUpload .box-image {
+            position: relative;
+            float: left;
+            margin: 5px 8px;
+        }
+
+            .myFilesUpload .box-image img {
+                width: auto;
+                height: 120px;
+                border-radius: 5%;
+            }
+
+        .myFilesUpload .wrap-btn-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            /* height: 2px; */
+            /* font-size: 20px; */
+            font-weight: bold;
+            color: #fff;
+        }
+
+            .myFilesUpload .wrap-btn-delete span {
+                border-radius: 2px;
+                background-color: rgba(211, 211, 211, 0.7);
+                padding: 0 5.5px;
+            }
+
+                .myFilesUpload .wrap-btn-delete span:hover {
+                    background-color: rgba(128, 128, 128, 0.7);
+                }
+
+        .myFilesUpload .btn-delete-image {
+            cursor: pointer;
+        }
+
+        .myFilesUpload .table {
+            width: 15%;
+        }
+
+        .note-editor.note-frame .note-editable {
+            background-color: #ffffff;
+        }
+
+        .note-editor.note-frame.fullscreen {
+            background-color: #ffffff;
+        }
+
+    </style>
+}
+
+<div class="page-heading">
+    <h3>@(Model == null ? "Create" : "Update") Life Insurance Policy</h3>
+</div>
+
+<div class="page-content">
+    <section class="row">
+        <div class="mb-4">
+            <a asp-action="List" class="btn btn-sm btn-primary">Go Back</a>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="row">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form asp-action="@(Model == null ? "Create" : "Edit")"
+                                  enctype="multipart/form-data"
+                                  class="form">
+                                <div class="form-body col-12">
+                                    <div class="row">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                <input type="hidden" asp-for="Id" />
+                                            }
+                                        }
+                                        <input type="hidden" asp-for="InsuranceCategoryId" value="1" />
+
+                                        <div class="form-group col-lg-12 mb-3">
+                                            <label asp-for="Name" class="control-label"></label>
+                                            <input asp-for="Name" class="form-control" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-6 mb-3">
+                                            <label asp-for="Premium" class="control-label"></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="premium-addon">USD</span>
+                                                <input asp-for="Premium"
+                                                       type="text"
+                                                       class="form-control"
+                                                       aria-label="Premium"
+                                                       aria-describedby="premium-addon">
+                                            </div>
+                                            <span asp-validation-for="Premium" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-6 mb-3">
+                                            <label asp-for="DurationId" class="control-label">Term (in year)</label>
+                                            <select asp-for="DurationId" asp-items="@ViewBag.DurationList" class="custom-select form-select form-control">
+                                                <option value="">--- Choose One ---</option>
+                                            </select>
+                                            <span asp-validation-for="DurationId" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-12 mb-3">
+                                            <label asp-for="Description" class="control-label"></label>
+                                            <input asp-for="Description" class="form-control" hidden>
+                                            <input id="description-temp" class="form-control" hidden value="@(Model != null ? Model.Description : "")">
+                                            <div id="summernote"></div>
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-12 mb-5 myFilesUpload">
+                                            <div class="row">
+                                                @* <label for="photo" class="col-sm-2 col-form-label">Image</label> *@
+                                                <div class="hdtuto control-group lst increment col-sm-3">
+                                                    <div class="list-input-hidden-upload">
+                                                        <input type="file" name="photo" id="file_upload" multiple class="myfrm form-control" hidden>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-outline-primary btn-add-image align-items-center" type="button">
+                                                            Add image
+                                                            <i class="bi bi-image ms-1" style="font-size:1.1rem;"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group list-images col-sm-9">
+                                                    @{
+                                                        if (!String.IsNullOrEmpty(Model?.Image))
+                                                        {
+                                                            <div class="box-image">
+                                                                <input type="hidden" name="photoOrigin" value="@Model.Image"
+                                                                       id="img-@Model.Id">
+                                                                <img src="~/@Model.Image" class="picture-box">
+                                                                <div class="wrap-btn-delete">
+                                                                    <span data-id="img-@Model.Id"
+                                                                          class="btn-delete-image">x</span>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        if (Model != null)
+                                                        {
+                                                            <input type="hidden" name="id" value="@Model.Id">
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions d-flex justify-content-end">
+                                    <input type="submit" value="@(Model == null ? "Create" : "Update")" class="btn btn-primary me-1" />
+                                    <button type="reset" class="btn btn-light-primary" id="resetBtn">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Recent Policies</h4>
+                </div>
+                <div class="card-content pb-4">
+                    @foreach (var item in recentPolicies)
+                    {
+                        <div class="recent-message d-flex px-4 py-3">
+                            <div class="avatar avatar-lg">
+                                <img src="/@item.Image">
+                            </div>
+                            <div class="name ms-4">
+                                <a asp-action="Edit" asp-route-id="@item.Id">
+                                    <h6 class="mb-1">@item.Name</h6>
+                                </a>
+                                <div class="text-muted mb-0">$ @item.Premium</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="/js/KienJs/main.js"></script>
+    <script>RenderSidebar();</script>
+
+    <script src="/AdminLibrary/assets/vendors/summernote/summernote-lite.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", (e) => {
+            (function textSearch() {
+                let searchTimer;
+                $('input[name="Premium"]').on("input", (e) => {
+                    clearTimeout(searchTimer);
+                    searchTimer = setTimeout(() => {
+                        const val = e.target.value;
+                        ajaxCall("/Admin/LifeInsurance/GetDurationList",
+                            { val },
+                            '#DurationId',
+                            RenderDurationList);
+                    }, 500);
+                });
+            })();
+            function ajaxCall(path, val, selector, cb, datatype = "json") {
+                $.ajax({
+                    url: path + (val[val] ?? ""),
+                    type: "GET",
+                    data: val,
+                    dataType: datatype,
+                    success: function (res) {
+                        let data;
+                        switch (datatype) {
+                            case "json":
+                                if (typeof cb === 'function') data = cb(res);
+                                break;
+                            default:
+                                data = res;
+                        }
+                        $(selector).html(data);
+                    }
+                })
+            }
+            function RenderDurationList(data) {
+                let htmls = "<option value=''>--- Choose One ---</option>";
+                return htmls += data.map(ele =>
+                    `<option value="${ele.id}">${ele.term}</option>`)
+                    .join("");
+            }
+
+            function PopulateEditorContent(fromSelector) {
+                if ($(fromSelector).val()) {
+                    const content = $.trim($(fromSelector).val());
+                    $("#summernote").summernote("code", content);
+                } else {
+                    $("#summernote").summernote({
+                        tabsize: 2,
+                        height: 480,
+                        fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                        placeholder: 'Put your Policy Description here...'
+                    })
+                    $("#summernote").summernote("reset");
+                }
+            }
+            PopulateEditorContent("#Description");
+
+
+            function resetBtnEvent(e) {
+                PopulateEditorContent("#description-temp");
+            }
+            document.querySelector("#resetBtn")
+                .addEventListener("click", (e) => {
+                    PopulateEditorContent("#description-temp");
+                    e.target.addEventListener("click", resetBtnEvent);
+                });
+
+            $('#summernote').on('summernote.blur', function () {
+                const content = $("#summernote").summernote("code");
+                $("#Description").val(content);
+            });
+
+        });
+    </script>
+
+    <script type="module">
+        import { FilesUpload } from '/js/KienJs/filesUpload.js';
+
+        document.addEventListener("readystatechange", (e) => {
+            if (e.target.readyState === "complete") {
+                const filesUpload = new FilesUpload({
+                    filesUpload: ".myFilesUpload",
+                    multiple: false
+                });
+            }
+        });
+    </script>
+}

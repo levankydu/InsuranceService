@@ -1,0 +1,83 @@
+﻿@model test0000001.Models.Policy
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Css {
+    <style>
+        .my-page-header {
+            background-image: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.65) 70%, rgba(255,255,255,0.3) 100%), url('/@Model.Image');
+            background-color: #fff;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header my-page-header py-5 mb-5 wow fadeIn"
+     data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-4 animated slideInDown mb-4">@Model.Name</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/LifeInsurance">Life Insurance</a></li>
+                <li class="breadcrumb-item active" aria-current="/LifeInsurance/@Model.Slug">@Model.Name</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Service Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto" style="max-width: 500px">
+            @* <h1 class="display-6 mb-5">
+            Please pick up one Life Insurance package that most suited for you
+            </h1> *@
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item rounded h-100 p-5">
+                    <div class="d-flex align-items-center ms-n5 mb-4">
+                        <div class="service-icon flex-shrink-0 bg-primary rounded-end me-4">
+                            @* <img class="img-fluid"
+                            src="~/@item.Image" style="width: 80px; height: auto; border-radius: 5%;"
+                            alt="@item.Name" /> *@
+                        </div>
+                        <h4 class="mb-0">@Model.Name</h4>
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.Raw(Model.Description)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @(Model.Duration?.Term / 12) years
+                        </dd>
+                        <dt class="col-sm-2 text-primary">
+                            @Html.DisplayNameFor(model => model.Premium)
+                        </dt>
+                        <dd class="col-sm-10 text-primary">
+                            @Html.DisplayFor(model => model.Premium) USD
+                        </dd>
+                    </dl>
+                    <a class="btn btn-outline-primary px-3"
+                       asp-action="PackageRegister"
+                       asp-route-slug="@Model.Slug">
+                        Acquire package
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
