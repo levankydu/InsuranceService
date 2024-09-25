@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
-using test0000001.Models;
+using InsuranceServices.Models;
 
-namespace test0000001.Repository.InterfaceClass
+namespace InsuranceServices.Repository.InterfaceClass
 {
     public interface IPolicy
     {

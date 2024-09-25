@@ -1,4 +1,4 @@
-﻿@model test0000001.Models.DTO.ViewLogin
+﻿@model InsuranceServices.Models.DTO.ViewLogin
 
 @{
 	Layout = null;
@@ -71,30 +71,30 @@
 					
 						<div class="input-group">
 							<i class='bx bxs-user'></i>
-							<input type="text" placeholder="Email" asp-for="Email" id="emailSigin">
+							<input type="text" placeholder="Email" asp-for="Email" id="emailSigin" onkeydown="return onResetMessageLogin()">
 							
 
 						</div>
 						<div class="input-group">
 							<i class='bx bxs-lock-alt'></i>
-							<input type="password" placeholder="Password" asp-for="Password" id="passwordSigin">
+							<input type="password" placeholder="Password" asp-for="Password" id="passwordSigin" onkeydown="return onResetMessageLogin()">
 							
 						</div>
 
 						<div class="input-group" style="text-align:left;">
 							<i class='bx bxs-lock-alt'></i>
 							<label class="text-muted">Keep Login</label>&nbsp;&nbsp;&nbsp;
-							<input type="checkbox" asp-for="KeepLogin" style="width:fit-content;">
+							<input type="checkbox" asp-for="KeepLogin" style="width:fit-content;">							
 						</div>
-						<p style="color:red;font-weight:bold;">@ViewBag.msg</p>
+						<p id ="messageLogin" style="color:red;font-weight:bold;">@ViewBag.msg</p>						
 						<button type="submit">Sign in</button>
 					</form>
 
 					<p>
-						<a asp-action="ForgotPassword" asp-controller="Home" style="text-decoration:none;">
+						<a asp-action="ForgotPassword" asp-controller="Home" style="text-decoration:none; color:#15233C">
 							<span>Forgot password?</span>
 						</a>
-						<a asp-action="GoogleLogin" asp-controller="Login" style="text-decoration:none;padding-left:5px;">
+						<a asp-action="GoogleLogin" asp-controller="Login" style="text-decoration:none;padding-left:5px; color:#15233C">
 							<span>Login with</span>&nbsp;&nbsp;<span class="fa fa-google"></span>
 						</a>
 						
@@ -150,28 +150,36 @@
 
 <script type="text/javascript">
 	function validateLoginForm() {
-
 		// Get the value of the input field with id="email"
 		var email = document.getElementById("emailSigin").value;
 		// Get the value of the input field with id="password"
 		var password = document.getElementById("passwordSigin").value;
+
+
+
+		// Get the value of the input field with id="messageLogin"
+		var messageLogin = document.getElementById("messageLogin");
 		// Regular expression to check if the email is in the correct format
 		var emailRegex = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
 		// Check if the email is empty
 		if (email == "") {
-			alert("Email field must be filled out");
+			// alert("Email field must be filled out");
+			messageLogin.innerHTML = "Email field must be filled out";
 			return false;
 		}
 
 		// Check if the email is in the correct format
 		if (!email.match(emailRegex)) {
-			alert("Please enter a valid email address");
+			// alert("Please enter a valid email address");
+			messageLogin.innerHTML = "Please enter a valid email address";
 			return false;
 		}
 		// Check if the password is empty
 		if (password == "") {
-			alert("Password field must be filled out");
+
+			// alert("Password field must be filled out");
+			messageLogin.innerHTML = "Password field must be filled out";
 			return false;
 		}
 		// Send a request to the server to check the user's credentials
@@ -179,8 +187,6 @@
 		// If the credentials are incorrect, display an error message and return false to prevent the form from being submitted
 		return true;
 	}
-</script>
-<script>
 	function validateRegisterForm() {
 		// Get the value of the input field with id="firstName"
 		var firstName = document.getElementById("firstName").value;
@@ -244,7 +250,11 @@
 		// If all checks pass, return true
 		return true;
 	}
+	function onResetMessageLogin() {
+        messageLogin.innerHTML = "";
+    }
 </script>
+
 <script src="~/LoginLibrary/login.js"></script>
 @section Scripts {
 	@{

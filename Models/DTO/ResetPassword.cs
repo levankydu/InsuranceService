@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace test0000001.Models.DTO
+namespace InsuranceServices.Models.DTO
 {
     public class ResetPassword
     {

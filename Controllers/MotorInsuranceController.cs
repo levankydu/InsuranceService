@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using System.Data;
-using test0000001.DB;
-using test0000001.Models;
-using test0000001.Repository.InterfaceClass;
-using test0000001.Repository.ServiceClass;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
+using InsuranceServices.Repository.InterfaceClass;
+using InsuranceServices.Repository.ServiceClass;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     public class MotorInsuranceController : Controller
     {

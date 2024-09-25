@@ -1,10 +1,10 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using test0000001.Models.LifeInsurance;
-using test0000001.Repository.ServiceClass.LifeInsurance;
+using InsuranceServices.Models.LifeInsurance;
+using InsuranceServices.Repository.ServiceClass.LifeInsurance;
 
-namespace test0000001.Controllers.Admin
+namespace InsuranceServices.Controllers.Admin
 {
     [Route("Admin/[Controller]/[Action]/{id?}")]
     [Authorize(Roles = "admin")]

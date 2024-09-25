@@ -2,25 +2,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
-using System.Collections;
+using PayPal.Api;
 using System.Diagnostics;
 using System.Text;
-using test0000001.DB;
-using test0000001.Models;
-using test0000001.Models.DTO;
-using test0000001.Repository.InterfaceClass;
-using PayPal.Api;
-using InsurancePayment = test0000001.Models.Payment;
-using Payment = PayPal.Api.Payment;
-using Payer = PayPal.Api.Payer;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
+using InsuranceServices.Models.DTO;
+using InsuranceServices.Repository.InterfaceClass;
+using InsurancePayment = InsuranceServices.Models.Payment;
 using Item = PayPal.Api.Item;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Payer = PayPal.Api.Payer;
+using Payment = PayPal.Api.Payment;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
 	public class HomeController : Controller
 	{
@@ -39,7 +34,7 @@ namespace test0000001.Controllers
 			this.emailService = emailService;
 			_db = db;
 		}
-
+		#region StaticViews
 		public IActionResult Index()
 		{
 			return View();
@@ -50,20 +45,29 @@ namespace test0000001.Controllers
 			return View();
 		}
 
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult OurService()
+		{
+			return View();
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult AboutUs()
+		{
+			return View();
+		}
+		#endregion
+
+		#region Profile + HolderPolicy View
 		[HttpGet]
 		[Authorize]
 		public async Task<IActionResult> Profile(string id)
 		{
 			string username = User.Identity!.Name!.ToString();
 			var user = await usrMgr.FindByNameAsync(username);
-			if (user != null)
-			{
-				return View(user);
-			}
-			else
-			{
-				return View();
-			}
+			return user != null ? View(user) : View();
 		}
 
 		[HttpGet]
@@ -75,14 +79,7 @@ namespace test0000001.Controllers
 			{
 				ApplicationUser user = await usrMgr.FindByNameAsync(username);
 				var holders = GetHolders(user.Id);
-				if (holders != null)
-				{
-					return View(holders);
-				}
-				else
-				{
-					return View();
-				}
+				return holders != null ? View(holders) : View();
 			}
 			ViewBag.status = "Admin can not get policyholder";
 			return View(new List<Policyholder> { });
@@ -95,12 +92,13 @@ namespace test0000001.Controllers
 			var holder = GetHolder(id);
 			return View(holder);
 		}
+		#endregion
 
+		#region GetAddressFunction
 		[HttpGet]
-		public IActionResult getDistrict(string code)
+		public IActionResult getDistrict(string province_id)
 		{
-			var districts = country.getDistricts(code);
-
+			var districts = country.getDistricts(province_id);
 			return Json(new
 			{
 				district = districts,
@@ -108,36 +106,26 @@ namespace test0000001.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult getWard(string district)
+		public IActionResult getWard(string district_id)
 		{
-			var wards = country.getWards(district);
-
+			var wards = country.getWards(district_id);
 			return Json(new
 			{
 				ward = wards,
 			});
 		}
+		#endregion
 
+		#region EditProfileFuntion
 		[HttpGet]
 		[Authorize]
 		public async Task<IActionResult> EditProfile()
 		{
 			var cities = country.getCity();
-
-			ViewBag.city = new SelectList(cities, "code", "name");
-
-
+			ViewBag.city = new SelectList(cities, "province_id", "province_name");
 			string username = User.Identity!.Name!.ToString();
 			ApplicationUser user = await usrMgr.FindByNameAsync(username);
-			if (user != null)
-			{
-
-				return View(user);
-			}
-			else
-			{
-				return View();
-			}
+			return user != null ? View(user) : View();
 		}
 
 		[HttpPost]
@@ -145,7 +133,7 @@ namespace test0000001.Controllers
 		{
 			var cities = country.getCity();
 
-			ViewBag.city = new SelectList(cities, "code", "name");
+			ViewBag.city = new SelectList(cities, "province_id", "province_name");
 			string username = User.Identity!.Name!.ToString();
 			ApplicationUser user = await usrMgr.FindByNameAsync(username);
 			//update user
@@ -155,14 +143,35 @@ namespace test0000001.Controllers
 			user.Gender = editUser.Gender;
 			user.PhoneNumber = editUser.PhoneNumber;
 			user.Address = editUser.Address;
-
-
 			await usrMgr.UpdateAsync(user);
 			ViewBag.status = "Done update information";
 			return View(user);
 
 		}
 
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> ChangeProfilePicture(IFormFile photo)
+		{
+			string username = User.Identity!.Name!.ToString();
+			var user = await usrMgr.FindByNameAsync(username);
+
+			if (photo != null || photo!.Length > 0)
+			{
+				var filePath = Path.Combine("wwwroot/ProfilePicture", photo.FileName);
+				var stream = new FileStream(filePath, FileMode.Create);
+				await photo.CopyToAsync(stream);
+				user.ProfilePicture = "ProfilePicture/" + photo.FileName;
+
+				await usrMgr.UpdateAsync(user);
+
+
+			}
+			return RedirectToAction("Profile", "Home");
+		}
+		#endregion
+
+		#region ChangePasswordFunction
 		[HttpGet]
 		[Authorize]
 		public async Task<IActionResult> ChangePassword()
@@ -186,22 +195,14 @@ namespace test0000001.Controllers
 				return View(model);
 			}
 			//old password is match , go update new password
-
 			var token = await usrMgr.GeneratePasswordResetTokenAsync(user);
-
 			var result = await usrMgr.ResetPasswordAsync(user, token, model.NewPassword);
-			if (!result.Succeeded)
-			{
-				ViewBag.status = "Error Changing Password";
-				return View(model);
-			}
-			else
-			{
-				ViewBag.status = "Update password successfully";
-				return View(model);
-			}
+			ViewBag.status = result.Succeeded ? "Update password successfully" : "Error Changing Password";
+			return View(model);
 		}
+		#endregion
 
+		#region ForgotPasswordFunction
 		[HttpGet]
 		[AllowAnonymous]
 		public IActionResult ForgotPassword()
@@ -214,26 +215,20 @@ namespace test0000001.Controllers
 		public async Task<IActionResult> ForgotPassword(string email)
 		{
 			var user = await usrMgr.FindByEmailAsync(email);
-
 			if (user == null)
 			{
 				ViewBag.status = "No user match";
 				return View();
 			}
-
 			var token = await usrMgr.GeneratePasswordResetTokenAsync(user);
-
 			string link = Url.Action("ResetPassword", "Home", new { token, email = user.Email }, Request.Scheme)!;
 			user.ProfilePicture = link.ToString();
 			var body = await emailService.RenderToStringAsync("../EmailTemplate/ForgotPassword", user);
 			string subject = "INSURANCE-PASSWORD RESET";
-
 			var emailResponse = await emailService.SendEmail(user.Email, body!, subject);
-
 			if (emailResponse.StatusCode == 1)
 			{
 				ViewBag.status = emailResponse.StatusMessage;
-				return View();
 			}
 			return View();
 		}
@@ -266,19 +261,9 @@ namespace test0000001.Controllers
 			ViewBag.status = "Success update your password via email authentication";
 			return View();
 		}
+		#endregion
 
-		[AllowAnonymous]
-		[HttpGet]
-		public IActionResult OurService()
-		{
-			return View();
-		}
-		[AllowAnonymous]
-		[HttpGet]
-		public IActionResult AboutUs()
-		{
-			return View();
-		}
+		#region GuestMessageFunction
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> ContactUsAsync()
@@ -314,28 +299,9 @@ namespace test0000001.Controllers
 			ViewBag.status = "Your Request Has Been Sent Successfully";
 			return View("ContactUs");
 		}
+		#endregion
 
-		[HttpPost]
-		[Authorize]
-		public async Task<IActionResult> ChangeProfilePicture(IFormFile photo)
-		{
-			string username = User.Identity!.Name!.ToString();
-			var user = await usrMgr.FindByNameAsync(username);
-
-			if (photo != null || photo!.Length > 0)
-			{
-				var filePath = Path.Combine("wwwroot/ProfilePicture", photo.FileName);
-				var stream = new FileStream(filePath, FileMode.Create);
-				await photo.CopyToAsync(stream);
-				user.ProfilePicture = "ProfilePicture/" + photo.FileName;
-
-				await usrMgr.UpdateAsync(user);
-
-
-			}
-			return RedirectToAction("Profile", "Home");
-		}
-
+		#region PaypalFunction
 		// start paypal
 		[Authorize(Roles = ("user"))]
 		public IActionResult PaymentWithPaypal(string? Cancel = null, int holderId = 0)
@@ -535,5 +501,6 @@ namespace test0000001.Controllers
 			string view = await emailService.RenderToStringAsync("../EmailTemplate/Payment", holder);
 			await emailService.SendEmail(holder.User!.Email, view, "Payment Sent");
 		}
+		#endregion
 	}
 }

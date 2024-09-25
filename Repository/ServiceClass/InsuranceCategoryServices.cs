@@ -1,9 +1,9 @@
-﻿using test0000001.DB;
+﻿using InsuranceServices.DB;
 using Microsoft.EntityFrameworkCore;
-using test0000001.Models;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.Models;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Repository.ServiceClass
+namespace InsuranceServices.Repository.ServiceClass
 {
     public class InsuranceCategoryServices : IInsuranceCategory
     {

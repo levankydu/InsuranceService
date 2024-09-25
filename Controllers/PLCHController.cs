@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Cryptography;
-using test0000001.DB;
-using test0000001.Models;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     [Authorize(Roles = "admin")]
     public class PLCHController : Controller

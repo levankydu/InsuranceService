@@ -1,9 +1,9 @@
-﻿using test0000001.DB;
-using test0000001.Models;
+﻿using InsuranceServices.DB;
+using InsuranceServices.Models;
 using Microsoft.EntityFrameworkCore;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Repository.ServiceClass
+namespace InsuranceServices.Repository.ServiceClass
 {
     public class PolicyServices : IPolicy
     {

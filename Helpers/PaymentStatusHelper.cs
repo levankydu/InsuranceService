@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using test0000001.Extensions;
-using test0000001.Models.LifeInsurance;
+using InsuranceServices.Extensions;
+using InsuranceServices.Models.LifeInsurance;
 
-namespace test0000001.Helpers
+namespace InsuranceServices.Helpers
 {
     public static class PaymentStatusHelper
     {

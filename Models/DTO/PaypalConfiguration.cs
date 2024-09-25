@@ -1,6 +1,6 @@
 ﻿using PayPal.Api;
 
-namespace test0000001.Models.DTO
+namespace InsuranceServices.Models.DTO
 {
 	public static class PaypalConfiguration
 	{

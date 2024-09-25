@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using System.Reflection.Emit;
-using test0000001.Models;
-using test0000001.Models.LifeInsurance;
+using InsuranceServices.Models;
+using InsuranceServices.Models.LifeInsurance;
 //using Object = test0000001.Models.Object;
-using test0000001.Models.DTO;
-using test0000001.Models.DTO.HomeInsurance;
+using InsuranceServices.Models.DTO;
+using InsuranceServices.Models.DTO.HomeInsurance;
 
-namespace test0000001.DB
+namespace InsuranceServices.DB
 {
     public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {

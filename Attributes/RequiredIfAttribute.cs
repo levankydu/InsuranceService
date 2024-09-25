@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
 
-namespace test0000001.Attributes
+namespace InsuranceServices.Attributes
 {
     /// <summary>
     /// Provides conditional validation based on related property value.
@@ -129,8 +129,8 @@ namespace test0000001.Attributes
                     return new ValidationResult(this.FormatErrorMessage(validationContext.DisplayName));
                 }
 
-                // additional check for strings so they're not empty
-                string val = value as string;
+				// additional check for strings so they're not empty
+				string val = value as string;
                 if (val != null && val.Trim().Length == 0)
                 {
                     return new ValidationResult(this.FormatErrorMessage(validationContext.DisplayName));

@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Xml.Linq;
-using test0000001.DB;
-using test0000001.Models;
-using test0000001.Models.DTO.HomeInsurance;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
+using InsuranceServices.Models.DTO.HomeInsurance;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     public class HomeInsuranceController : Controller
     {
@@ -39,12 +39,12 @@ namespace test0000001.Controllers
             var model = await db.Home_Insurance!.Where(i => i.Id == id).Include(h => h.Photos).FirstOrDefaultAsync()!;
             return View(model);
         }
-        public async Task<IActionResult> Introduce()
-        {
-            return View();
-        }
-       
-        [Authorize(Roles = ("admin"))]
+		public IActionResult Introduce()
+		{
+			return View();
+		}
+
+		[Authorize(Roles = ("admin"))]
         [HttpGet]
         public IActionResult HomePolicyList()
         {

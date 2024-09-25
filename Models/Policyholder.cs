@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 using System.Globalization;
 using NuGet.Packaging;
-using test0000001.Models.LifeInsurance;
-using test0000001.Attributes;
+using InsuranceServices.Models.LifeInsurance;
+using InsuranceServices.Attributes;
 using System.Text.RegularExpressions;
 
-namespace test0000001.Models
+namespace InsuranceServices.Models
 {
     [Table(name: "tbPolicyholder")]
     public class Policyholder

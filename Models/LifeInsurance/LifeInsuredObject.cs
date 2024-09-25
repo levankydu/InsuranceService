@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using test0000001.Attributes;
+using InsuranceServices.Attributes;
 
-namespace test0000001.Models.LifeInsurance
+namespace InsuranceServices.Models.LifeInsurance
 {
     public class LifeInsuredObject
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using test0000001.DB;
+using InsuranceServices.DB;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     [Route("Admin/[Controller]/[Action]/{id?}")]
     public class PolicyHolderController : Controller

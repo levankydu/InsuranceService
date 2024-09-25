@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using test0000001.DB;
-using test0000001.Extensions;
-using test0000001.Models;
-using test0000001.Models.DTO.LifeInsurance;
-using test0000001.Models.LifeInsurance;
-using test0000001.Repository.ServiceClass.LifeInsurance;
+using InsuranceServices.DB;
+using InsuranceServices.Extensions;
+using InsuranceServices.Models;
+using InsuranceServices.Models.DTO.LifeInsurance;
+using InsuranceServices.Models.LifeInsurance;
+using InsuranceServices.Repository.ServiceClass.LifeInsurance;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     [Authorize(Roles = "user")]
     public class LifeInsuranceController : Controller

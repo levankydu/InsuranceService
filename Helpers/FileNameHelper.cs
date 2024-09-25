@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.RegularExpressions;
 
-namespace test0000001.Helpers
+namespace InsuranceServices.Helpers
 {
     public static class FileNameHelper
     {

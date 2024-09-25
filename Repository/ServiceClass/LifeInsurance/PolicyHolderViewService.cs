@@ -1,8 +1,8 @@
-﻿using test0000001.Models;
-using test0000001.Models.DTO.LifeInsurance;
-using test0000001.Models.LifeInsurance;
+﻿using InsuranceServices.Models;
+using InsuranceServices.Models.DTO.LifeInsurance;
+using InsuranceServices.Models.LifeInsurance;
 
-namespace test0000001.Repository.ServiceClass.LifeInsurance
+namespace InsuranceServices.Repository.ServiceClass.LifeInsurance
 {
     public class PolicyHolderViewService
     {

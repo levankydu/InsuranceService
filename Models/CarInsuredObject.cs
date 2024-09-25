@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace test0000001.Models
+namespace InsuranceServices.Models
 {
     [Table(name: ("tbCarInsuredObject"))]
     public class CarInsuredObject

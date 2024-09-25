@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace test0000001.Repository.ServiceClass.LifeInsurance
+namespace InsuranceServices.Repository.ServiceClass.LifeInsurance
 {
     public class FileHandlerService
     {

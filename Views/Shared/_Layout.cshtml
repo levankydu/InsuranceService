@@ -233,20 +233,23 @@
 	<script src="~/HomeLibrary/js/custom.js"></script>
 	<script>
 		const logoutBtn = document.querySelector("#logout-button");
-		logoutBtn.addEventListener("click", function (e) {
-			e.preventDefault();
-			swal({
-				title: "Logging out, are you sure?",
-				icon: "info",
-				buttons: true,
-				dangerMode: true,
-			})
-				.then((isAccept) => {
-					if (isAccept) {
-						window.location.href = '/Login/Logout';
-					}
-				});
-		});
+
+		if (logoutBtn) {
+			logoutBtn.addEventListener("click", function (e) {
+				e.preventDefault();
+				swal({
+					title: "Logging out, are you sure?",
+					icon: "info",
+					buttons: true,
+					dangerMode: true,
+				})
+					.then((isAccept) => {
+						if (isAccept) {
+							window.location.href = '/Login/Logout';
+						}
+					});
+			});
+		}
 	</script>
 	@RenderSection("JS",required:false)
 </body>

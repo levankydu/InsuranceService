@@ -1,6 +1,6 @@
-﻿using test0000001.Models.DTO.Country;
+﻿using InsuranceServices.Models.DTO.Country;
 
-namespace test0000001.Repository.InterfaceClass
+namespace InsuranceServices.Repository.InterfaceClass
 {
 	public interface ICountry
 	{

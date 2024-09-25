@@ -3,9 +3,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using test0000001.DB;
+using InsuranceServices.DB;
 
-namespace test0000001.Repository.ServiceClass.HostedService
+namespace InsuranceServices.Repository.ServiceClass.HostedService
 {
     public class PolicyHolderHostedService : BackgroundService
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace test0000001.Models.DTO.LifeInsurance
+namespace InsuranceServices.Models.DTO.LifeInsurance
 {
     public class PackageRejectDto
     {

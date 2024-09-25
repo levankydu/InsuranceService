@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 
-namespace test0000001.Extensions
+namespace InsuranceServices.Extensions
 {
     public static class TempDataExtensions
     {

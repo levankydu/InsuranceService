@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using test0000001.Models.DTO;
+using InsuranceServices.Models.DTO;
 
-namespace test0000001.Repository.InterfaceClass
+namespace InsuranceServices.Repository.InterfaceClass
 {
 	public interface IEmailHelper
 	{

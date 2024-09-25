@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace test0000001.Extensions
+namespace InsuranceServices.Extensions
 {
 
     /// <summary>  

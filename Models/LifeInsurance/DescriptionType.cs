@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace test0000001.Models.LifeInsurance
+namespace InsuranceServices.Models.LifeInsurance
 {
     public enum DescriptionType
     {

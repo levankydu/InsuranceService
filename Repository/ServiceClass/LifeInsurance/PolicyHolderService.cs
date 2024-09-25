@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using test0000001.DB;
-using test0000001.Extensions;
-using test0000001.Models;
+using InsuranceServices.DB;
+using InsuranceServices.Extensions;
+using InsuranceServices.Models;
 
-namespace test0000001.Repository.ServiceClass.LifeInsurance
+namespace InsuranceServices.Repository.ServiceClass.LifeInsurance
 {
     public class PolicyHolderService
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
 
-namespace test0000001.Extensions
+namespace InsuranceServices.Extensions
 {
     public static class ControllerExtensions
     {

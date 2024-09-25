@@ -9,11 +9,11 @@ using Newtonsoft.Json.Linq;
 using PayPal.Api;
 using PayPalCheckoutSdk.Orders;
 using System.Globalization;
-using test0000001.DB;
-using test0000001.Models;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     [Authorize]
     public class HealthInsuranceController : Controller

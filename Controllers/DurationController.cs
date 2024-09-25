@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using test0000001.DB;
-using test0000001.Models;
+using InsuranceServices.DB;
+using InsuranceServices.Models;
 
-namespace test0000001.Controllers
+namespace InsuranceServices.Controllers
 {
     [Route("Admin/[Controller]/[Action]/{id?}")]
     public class DurationController : Controller

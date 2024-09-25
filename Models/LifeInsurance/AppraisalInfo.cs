@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace test0000001.Models.LifeInsurance
+namespace InsuranceServices.Models.LifeInsurance
 {
     [Table(name: "tbAppraisalInfo")]
     public class AppraisalInfo

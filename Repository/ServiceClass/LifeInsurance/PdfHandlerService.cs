@@ -2,9 +2,9 @@
 using PdfSharpCore.Pdf.Security;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
-using test0000001.Models.DTO.LifeInsurance;
+using InsuranceServices.Models.DTO.LifeInsurance;
 
-namespace test0000001.Repository.ServiceClass.LifeInsurance
+namespace InsuranceServices.Repository.ServiceClass.LifeInsurance
 {
     public class PdfHandlerService
     {

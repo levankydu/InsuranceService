@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace test0000001.Clients
+namespace InsuranceServices.Clients
 {
     public sealed class PaypalForLifeClient
     {

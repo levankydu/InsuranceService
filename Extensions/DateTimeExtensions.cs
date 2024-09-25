@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using test0000001.Models.DTO.LifeInsurance;
+using InsuranceServices.Models.DTO.LifeInsurance;
 
-namespace test0000001.Extensions
+namespace InsuranceServices.Extensions
 {
     public static class DateTimeExtensions
     {

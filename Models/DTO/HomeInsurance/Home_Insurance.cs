@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace test0000001.Models.DTO.HomeInsurance
+namespace InsuranceServices.Models.DTO.HomeInsurance
 {
     public class Home_Insurance
     {

@@ -1,4 +1,4 @@
-﻿@model test0000001.Models.ApplicationUser
+﻿@model InsuranceServices.Models.ApplicationUser
 
 @section Css{
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -255,12 +255,12 @@
 		$.ajax({
 			url: "/Home/getDistrict",
 			type: "get",
-			data: { code: $("#city").val() },
+			data: { province_id: $("#city").val() },
 			success: function (res) {
 				$("#district").html('<option value ="">--Select District--</option>');
 				$.each(res.district, function (key, value) {
 					$("#district").append('<option value="' + value
-						.code + '">' + value.name + '</option>');
+						.district_id + '">' + value.district_name + '</option>');
 				});
 				$("#ward").html('<option value="" >--Select Wards--</option>');
 
@@ -274,14 +274,14 @@
 		$.ajax({
 			url: "/Home/getWard",
 			type: "get",
-			data: { district: $("#district").val() },
+			data: { district_id: $("#district").val() },
 			success: function (res) {
 
 
 				$("#ward").html('<option value ="">Select Wards--</option>');
 				$.each(res.ward, function (key, value) {
 					$("#ward").append('<option value="' + value
-						.code + '">' + value.name + '</option>');
+						.ward_id + '">' + value.ward_name + '</option>');
 				});
 			}
 		});

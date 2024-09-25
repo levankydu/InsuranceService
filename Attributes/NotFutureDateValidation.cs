@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace test0000001.Attributes
+namespace InsuranceServices.Attributes
 {
     public class NotFutureDateValidation : ValidationAttribute, IClientModelValidator
     {

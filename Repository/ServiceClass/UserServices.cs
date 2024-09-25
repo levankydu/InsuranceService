@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
-using test0000001.Models;
-using test0000001.Models.DTO;
-using test0000001.Repository.InterfaceClass;
+using InsuranceServices.Models;
+using InsuranceServices.Models.DTO;
+using InsuranceServices.Repository.InterfaceClass;
 
-namespace test0000001.Repository.ServiceClass
+namespace InsuranceServices.Repository.ServiceClass
 {
 
 	public class UserServices : IUserAuthentication

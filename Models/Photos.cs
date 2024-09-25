@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using test0000001.Models.DTO.HomeInsurance;
+using InsuranceServices.Models.DTO.HomeInsurance;
 
-namespace test0000001.Models
+namespace InsuranceServices.Models
 {
     public class Photos
     {

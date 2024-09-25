@@ -1,10 +1,10 @@
-﻿@using test0000001.Extensions;
-@using test0000001.Helpers;
-@model IEnumerable<test0000001.Models.Policyholder>
+﻿@using InsuranceServices.Extensions;
+@using InsuranceServices.Helpers;
+@model IEnumerable<InsuranceServices.Models.Policyholder>
 
 @{
     ViewData["Title"] = "Life Insurance";
-    var dueCounts = ViewBag.DueCounts as List<test0000001.Models.DTO.LifeInsurance.DuePaymentCountDto>;
+    var dueCounts = ViewBag.DueCounts as List<InsuranceServices.Models.DTO.LifeInsurance.DuePaymentCountDto>;
 }
 
 @section Css {

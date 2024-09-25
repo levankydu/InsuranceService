@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using test0000001.DB;
-using test0000001.Models.LifeInsurance;
+using InsuranceServices.DB;
+using InsuranceServices.Models.LifeInsurance;
 
-namespace test0000001.Repository.ServiceClass.LifeInsurance
+namespace InsuranceServices.Repository.ServiceClass.LifeInsurance
 {
     public class AppraisalQuesService
     {

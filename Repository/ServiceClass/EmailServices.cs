@@ -1,9 +1,9 @@
-﻿using test0000001.Repository.InterfaceClass;
+﻿using InsuranceServices.Repository.InterfaceClass;
 using System.Configuration;
 using System.Net;
 using System.Net.Mail;
-using static test0000001.Models.Policyholder;
-using test0000001.Models.DTO;
+using static InsuranceServices.Models.Policyholder;
+using InsuranceServices.Models.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace test0000001.Repository.ServiceClass
+namespace InsuranceServices.Repository.ServiceClass
 {
     public class EmailServices : IEmailHelper
     {
@@ -31,20 +31,21 @@ namespace test0000001.Repository.ServiceClass
         {
             var status = new Status();
 
-            MailMessage mailMessage = new MailMessage("leemarkyr@gmail.com", userEmail);
+			MailMessage mailMessage = new("leemarkyr@gmail.com", userEmail)
+			{
+				Subject = subject,
+				Body = body,
+				IsBodyHtml = true
+			};
 
-            mailMessage.Subject = subject;
+			SmtpClient client = new("smtp.gmail.com")
+			{
+				Port = 587,
+				Credentials = new NetworkCredential("leemarkyr@gmail.com", "sord seog fene rqai"),
+				EnableSsl = true
+			};
 
-            mailMessage.Body = body;
-
-            mailMessage.IsBodyHtml = true;
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com");
-            client.Port = 587;
-            client.Credentials = new NetworkCredential("leemarkyr@gmail.com", "sord seog fene rqai");
-            client.EnableSsl = true;
-
-            try
+			try
             {
                 client.Send(mailMessage);
                 status.StatusMessage = "PLease check your email , this will expired at last 10 hours";
